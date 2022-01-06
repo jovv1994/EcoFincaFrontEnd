@@ -1,0 +1,597 @@
+.container {
+  background: rgba(252, 245, 245, 0);
+  border: 2px solid black;
+}
+
+.space {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 5% 0px 5%;
+  position: relative;
+  margin: 7px;
+  padding: 7px;
+}
+
+.time {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 5% 0px 5%;
+  position: relative;
+  margin: 2px;
+  padding: 2px;
+}
+
+.two {
+  width: 70%;
+  height: 100%;
+  display: block;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 7px;
+  padding: 7px;
+}
+
+.tree {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 37px;
+  width: 70%;
+  height: 100%;
+  background-color: #581908;
+  margin: 10px;
+  padding: 10px;
+}
+
+.one {
+  width: 30%;
+  height: 100%;
+  margin: 7px;
+  padding: 7px;
+}
+
+.four {
+  width: 30%;
+  height: 100%;
+  margin: 7px;
+  padding: 7px;
+}
+
+.five {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 37px;
+  width: 70%;
+  height: 100%;
+  background-color: #49a47a;
+  margin: 10px;
+  padding: 10px;
+}
+
+.six {
+  width: 30%;
+  height: 100%;
+  margin: 7px;
+  padding: 7px;
+}
+
+.eight {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.seven {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(216, 243, 220, 0.45);
+  border-radius: 100px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.nane {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(216, 243, 220, 0.45);
+  border-radius: 100px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.ten {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 5% 0px 5%;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.ten {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 5% 0px 5%;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+.once {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.twe {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.try {
+  width: 100%;
+  height: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.trys {
+  width: 100%;
+  height: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.fouy {
+  width: 100%;
+  height: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.fivy {
+  width: 100%;
+  height: 34%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 10px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.fivyr {
+  width: 100%;
+  height: 34%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 10px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.syx {
+  margin: 1em auto;
+  padding: 0px;
+}
+
+.sevy {
+  width: 100%;
+  height: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.eighy {
+  width: 100%;
+  height: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.nany {
+  width: 100%;
+  height: 34%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.twy {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 10px;
+}
+
+.twys {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 10px;
+}
+
+.tone {
+  width: 15%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1px;
+  padding: 0px;
+}
+
+.tones {
+  width: 15%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1px;
+  padding: 0px;
+}
+
+.toner {
+  width: 15%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1px;
+  padding: 0px;
+}
+
+.ten h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 5px;
+  padding: 5px;
+}
+
+.ten span {
+  color: #1b4332;
+}
+
+.tens h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-right: 50px;
+  padding: 0px;
+}
+
+.tens Link a {
+  color: #77ecb2;
+  margin-left: 5px;
+  padding: 0px;
+}
+
+.you {
+  color: #77ecb2;
+  margin-left: 5px;
+  padding: 0px;
+}
+.forty {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.fortys {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.forty h2 {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.fortys h2 {
+  text-align: center;
+  color: #2d6a4f;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tweny {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.twenys {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.twenr {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tweny h3 {
+  text-align: center;
+  color: #ffa400;
+  margin: 0px;
+  padding: 0px;
+}
+
+.twenys h3 {
+  text-align: center;
+  color: #166088;
+  margin: 0px;
+  padding: 0px;
+}
+
+.twenr h3 {
+  text-align: center;
+  color: #8b2635;
+  margin: 0px;
+  padding: 0px;
+}
+
+.hola {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.hola h6 {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.suma {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.suma h5 {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.rise {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 10px;
+  padding: 0px;
+}
+
+.rises {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+.sure {
+  width: 83%;
+  height: 50%;
+  background-color: #a3333d;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  border-radius: 35px;
+  margin: 0px;
+  padding: 7px;
+}
+
+.sures {
+  width: 83%;
+  height: 50%;
+  background-color: #372248;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  border-radius: 35px;
+  margin: 0px;
+  padding: 7px;
+}
+
+.surer {
+  width: 83%;
+  height: 50%;
+  background-color: #372248;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  border-radius: 35px;
+  margin: 0px;
+  padding: 7px;
+}
+
+.flecha {
+  width: 15%;
+  height: 100%;
+  background-color: #a3333d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1px;
+  padding: 0px;
+}
+
+.flechas {
+  width: 15%;
+  height: 100%;
+  background-color: #372248;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1px;
+  padding: 0px;
+}
+
+.flechar {
+  width: 15%;
+  height: 100%;
+  background-color: #372248;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1px;
+  padding: 0px;
+}
+
+.tataa {
+  height: 100%;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  margin: 1px;
+  padding: 0px;
+}
+
+.tataas {
+  height: 100%;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tataar {
+  height: 100%;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tataa h5 {
+  text-align: center;
+  color: #fff;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tataas h5 {
+  text-align: center;
+  color: #fff;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tataar h5 {
+  text-align: center;
+  color: #fff;
+  margin: 0px;
+  padding: 0px;
+}
