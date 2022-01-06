@@ -1,6 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import React, { useEffect, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup.umd";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
   Button,
