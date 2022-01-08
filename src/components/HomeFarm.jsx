@@ -9,7 +9,7 @@ import FilterableDeliveryTable from "@/components/FilterableDeliveryTable";
 import styled from "styled-components";
 import Delivery from "@/api/delivery";
 
-export default function HomeFarm() {
+export default function HomeFarm(props) {
   const [data, setData] = useState([]);
   useEffect(() => {
     const getData = async () => {
@@ -28,7 +28,7 @@ export default function HomeFarm() {
 
   return (
     <Container>
-      <FilterableDeliveryTable deliveries={data} />
+      <FilterableDeliveryTable deliveries={data} role={props.role} />
       <Info>
         {" "}
         {/*----------------------CARD 1---------------------------*/}
@@ -134,37 +134,3 @@ const Info = styled.div`
 const Hiper = styled.a`
   text-decoration: none;
 `;
-
-const DELIVERIES = [
-  {
-    category: "Sporting Goods",
-    price: "$49.99",
-    stocked: true,
-    name: "Football",
-  },
-  {
-    category: "Sporting Goods",
-    price: "$9.99",
-    stocked: true,
-    name: "Baseball",
-  },
-  {
-    category: "Sporting Goods",
-    price: "$29.99",
-    stocked: false,
-    name: "Basketball",
-  },
-  {
-    category: "Electronics",
-    price: "$99.99",
-    stocked: true,
-    name: "iPod Touch",
-  },
-  {
-    category: "Electronics",
-    price: "$399.99",
-    stocked: false,
-    name: "iPhone 5",
-  },
-  { category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7" },
-];

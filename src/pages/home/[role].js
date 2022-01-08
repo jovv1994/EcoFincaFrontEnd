@@ -13,8 +13,17 @@ const Homes = ({ data }) => {
 
   return (
     <Layout>
-      <Title>Historial de entregas</Title>
-      {role === "finca" ? <HomeFarm /> : <HomeCenter />}
+      {role === "finca" ? (
+        <>
+          <Title>Historial de entregas</Title>
+          <HomeFarm role="finca" />
+        </>
+      ) : (
+        <>
+          <Title>Historial de recolecciones</Title>
+          <HomeCenter role="acopio" />
+        </>
+      )}
     </Layout>
   );
 };

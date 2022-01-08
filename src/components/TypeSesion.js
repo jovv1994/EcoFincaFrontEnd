@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ import Logout from "@/components/Logout";
 import { useAuth } from "@/contexts/auth";
 
 export default function TypeSesion() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { user } = useAuth();
 

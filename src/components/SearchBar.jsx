@@ -14,20 +14,41 @@ export default function SearchBar(props) {
   return (
     <Form>
       <StyledSearchIcon />
-      <Input
-        type="text"
-        placeholder="Buscar en el historial de entregas..."
-        value={props.filterText}
-        onChange={handleFilterTextChange}
-      />
-      <P>
-        <input
-          type="checkbox"
-          checked={props.inPending}
-          onChange={handleInPendingChange}
-        />{" "}
-        Mostrar solo entregas pendientes
-      </P>
+      {props.role === "finca" ? (
+        <>
+          <Input
+            type="text"
+            placeholder="Buscar por centro de acopio..."
+            value={props.filterText}
+            onChange={handleFilterTextChange}
+          />
+          <P>
+            <input
+              type="checkbox"
+              checked={props.inPending}
+              onChange={handleInPendingChange}
+            />{" "}
+            Mostrar solo entregas pendientes
+          </P>
+        </>
+      ) : (
+        <>
+          <Input
+            type="text"
+            placeholder="Buscar por finca..."
+            value={props.filterText}
+            onChange={handleFilterTextChange}
+          />
+          <P>
+            <input
+              type="checkbox"
+              checked={props.inPending}
+              onChange={handleInPendingChange}
+            />{" "}
+            Mostrar solo entregas recolectadas
+          </P>
+        </>
+      )}
     </Form>
   );
 }
@@ -50,10 +71,18 @@ const Input = styled.input`
   border-top: 2px solid #40916c;
   border-bottom: 2px solid #40916c;
   padding: 0;
+  outline: none;
+  width: 300px;
 `;
 
 const P = styled.p`
   grid-column: 1 / span 2;
+  text-align: center;
+  color: #1b4332;
+  background: #74c69d;
+  margin: 0;
+  padding: 5px;
+  font-weight: bold;
 `;
 
 const StyledSearchIcon = styled(SearchIcon)`

@@ -22,11 +22,13 @@ export default function FilterableDeliveryTable(props) {
         inPending={inPending}
         onFilterTextChange={handleFilterTextChange}
         onInPendingChange={handleInPendingChange}
+        role={props.role}
       />
       <DeliveryTable
         deliveries={props.deliveries}
         filterText={filterText}
         inPending={inPending}
+        role={props.role}
       />
     </Container>
   );
