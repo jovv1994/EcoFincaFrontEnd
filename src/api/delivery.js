@@ -26,6 +26,20 @@ const Delivery = {
       }
     );
   },
+
+  updateDelivery: (id, newState) => {
+    const token = localStorage.getItem("id_token");
+
+    return api.put(
+      "/deliveries/" + id,
+      { state: newState },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
 };
 
 export default Delivery;

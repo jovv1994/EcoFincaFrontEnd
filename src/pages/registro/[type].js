@@ -13,13 +13,12 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/auth";
-import withoutAuth from "@/hocs/withoutAuth";
 import Routes from "@/constants/routes";
 import Image from "next/image";
 import Provincia from "@/api/provincias";
 import Canton from "@/api/cantones";
 
-/*-------------------------Validacion de datos--------------------------*/
+/*-------------------------Validación de datos--------------------------*/
 const schema = yup.object().shape({
   name: yup.string().required("El nombre es obligatorio"),
   lastname: yup.string().required("El apellido es obligatorio"),
@@ -31,10 +30,10 @@ const schema = yup.object().shape({
     .string()
     .min(8, "Ingrese al menos 8 caracteres")
     .required("Ingrese una contraseña"),
-  // password_confirmation: yup
-  //   .string()
-  //   .oneOf([yup.ref("password"), null], "Las claves no coinciden")
-  //   .required("Confirme su contraseña"),
+  password_confirmation: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Las claves no coinciden")
+    .required("Confirme su contraseña"),
   address: yup.string().required("La dirección es requerida"),
   organization_type: yup.string().required("Ingrese el nombre de su finca"),
   description: yup
@@ -42,31 +41,26 @@ const schema = yup.object().shape({
     .max(200)
     .required("Una breve descripción de sus productos"),
 });
-/*-----------------------------------------------------------------------*/
-/*------------------------Obtención de datos---------------------------- */
-/*export async function getStaticProps(context) {
+/*------------------------Obtención de datos para las provincias--------------------------- */
+export async function getStaticProps() {
   const responseProvincia = await Provincia.all();
   const dataProvincia = responseProvincia.data;
+
   return {
-    props: { dataProvincia }, // will be passed to the page component as props
+    props: { dataProvincia },
   };
 }
 
 export async function getStaticPaths() {
   return {
-    paths: [
-      { params: { type: "finca" } },
-      { params: { type: "acopio" } }, // See the "paths" section below
-    ],
-    fallback: true, // See the "fallback" section below
+    paths: [{ params: { type: "finca" } }, { params: { type: "acopio" } }],
+    fallback: true,
   };
-}*/
-
-/*-----------------------------------------------------------------------*/
-const RegisterPage = () => {
-  /*Obtener el valor de la ruta dinamica*/
+}
+/*-------------------------------Componente principal----------------------------------------*/
+const RegisterPage = ({ dataProvincia }) => {
   const router = useRouter();
-  const { type } = router.query;
+  const { type } = router.query; //Obtener el valor de la ruta dinámica
 
   const {
     handleSubmit,
@@ -83,20 +77,9 @@ const RegisterPage = () => {
   const [cantonId, setCantonId] = useState("");
   const [parroquias, setParroquias] = useState([]);
 
-  //setProvincias(dataProvincia);
-
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await Provincia.all();
-        console.log("response", response.data);
-        setProvincias(response.data);
-      } catch (e) {
-        console.log("e", e);
-      }
-    };
-
-    getData();
+    setProvincias(dataProvincia);
+    console.log("Provincias:", dataProvincia);
   }, []);
 
   useEffect(() => {
@@ -106,7 +89,7 @@ const RegisterPage = () => {
         console.log("CANTONES DE PROVINCIA " + provinciaId, response.data);
         setCantones(response.data);
       } catch (e) {
-        console.log("E", e);
+        console.log(e);
       }
     };
 
@@ -120,7 +103,7 @@ const RegisterPage = () => {
         console.log("PARROQUIAS DE CANTON" + cantonId, response.data);
         setParroquias(response.data);
       } catch (e) {
-        console.log("e", e);
+        console.log(e);
       }
     };
 
@@ -135,7 +118,7 @@ const RegisterPage = () => {
   const onSubmit = async (formData) => {
     setUserInfo(null);
     setResult("Enviando los datos...");
-    console.log("FORM DATA", formData);
+    console.log("Datos recibidos del formulario:", formData);
     try {
       const userData = {
         ...formData,
@@ -143,16 +126,15 @@ const RegisterPage = () => {
       };
 
       const response = await register(userData);
-      console.log("response despues de registro", response.data);
+      console.log("Datos devueltos después del registro:", response.data);
       setUserInfo(response.data);
 
       setResult("Usuario registrado correctamente");
       reset();
-      //PRIMER PUNTO A REVISAR, VALIDACION PUEDE DARSE EN HOCS
       {
         type === "finca"
           ? router.push(Routes.HOME_FARM)
-          : router.push(Routes.HOME_ROLE_COLLECTION_CENTER);
+          : router.push(Routes.HOME_COLLECTION_CENTER);
       }
     } catch (e) {
       console.log("e", e.response);
@@ -268,23 +250,25 @@ const RegisterPage = () => {
             />
             <p>{errors.password?.message}</p>
           </div>
-          {/* <div>
-            <Controller
-              name="password_confirmation"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <StyledTextField
-                  {...field}
-                  type="password"
-                  label="Confirma tu contraseña"
-                  variant="outlined"
-                  size="small"
-                />
-              )}
-            />
-            <p>{errors.password_confirmation?.message}</p>
-          </div> */}
+          {
+            <div>
+              <Controller
+                name="password_confirmation"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <StyledTextField
+                    {...field}
+                    type="password"
+                    label="Confirma tu contraseña"
+                    variant="outlined"
+                    size="small"
+                  />
+                )}
+              />
+              <p>{errors.password_confirmation?.message}</p>
+            </div>
+          }
           <div>
             <Controller
               name="address"
@@ -426,6 +410,22 @@ const RegisterPage = () => {
               />
               <p>{errors.parroquia?.message}</p>
             </div>
+            {/*<div>
+              <Controller
+                name="image"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <StyledTextField
+                    {...field}
+                    type="file"
+                    variant="outlined"
+                    size="small"
+                  />
+                )}
+              />
+              <p>{errors.title?.message}</p>
+            </div>*/}
           </div>
           <p>{result}</p>
           {userInfo && (
@@ -447,7 +447,7 @@ const RegisterPage = () => {
             <div>
               <p>
                 ¿Ya tienes una cuenta?{" "}
-                <Link href="sesion/login" passHref>
+                <Link href="/login" passHref>
                   <StyledMuiLink>Iniciar sesión</StyledMuiLink>
                 </Link>
               </p>
@@ -458,9 +458,7 @@ const RegisterPage = () => {
     </Layout>
   );
 };
-export default withoutAuth(RegisterPage);
-/*----------------------------------------------------------------------*/
-
+export default RegisterPage;
 /*------------------------Estilos con Styled Component------------------*/
 const Container = styled.div`
   background: #74c69d;

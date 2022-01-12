@@ -24,9 +24,7 @@ const schema = yup.object().shape({
   description: yup.string().max(200).required("La descripción es obligatoria"),
   quantity: yup.string().required("Ingrese la cantidad de botellas"),
   image: yup.mixed().required("La imagen es obligatoria"),
-  provincia: yup.string().required("Elija la provincia"),
-  canton: yup.string().required("Elija el cantón"),
-  parroquia: yup.string().required("Elija la parroquia"),
+  address: yup.string().required("Ingrese la dirección para el retiro"),
   for_user_id: yup
     .string()
     .required("Debe elegir un centro de acopio para su entrega"),
@@ -50,20 +48,12 @@ const DeliveryPage = () => {
     resolver: yupResolver(schema),
   });
 
-  const [provincias, setProvincias] = useState([]);
-  const [provinciaId, setProvinciaId] = useState("");
-  const [cantones, setCantones] = useState([]);
-  const [cantonId, setCantonId] = useState("");
-  const [parroquias, setParroquias] = useState([]);
   const [collectionCenters, setCollectionCenters] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await Provincia.all();
         const anotherResponse = await User.getCollectionCenters();
-        console.log("response", response.data);
-        setProvincias(response.data);
         setCollectionCenters(anotherResponse.data);
       } catch (e) {
         console.log("e", e);
@@ -73,49 +63,19 @@ const DeliveryPage = () => {
     getData();
   }, []);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await Provincia.cantones(provinciaId);
-        console.log("CANTONES DE PROVINCIA " + provinciaId, response.data);
-        setCantones(response.data);
-      } catch (e) {
-        console.log("E", e);
-      }
-    };
-
-    getData();
-  }, [provinciaId]);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await Canton.parroquias(cantonId);
-        console.log("PARROQUIAS DE CANTON" + cantonId, response.data);
-        setParroquias(response.data);
-      } catch (e) {
-        console.log("e", e);
-      }
-    };
-
-    getData();
-  }, [cantonId]);
-
   const onSubmit = async (values) => {
-    console.log("values", values);
+    console.log("Datos enviados desde el formulario de entregas:", values);
 
     const formData = new FormData();
     formData.append("description", values.description);
     formData.append("quantity", values.quantity);
     formData.append("image", values.image[0]);
-    formData.append("provincia", values.provincia);
-    formData.append("canton", values.canton);
-    formData.append("parroquia", values.parroquia);
+    formData.append("address", values.address);
     formData.append("for_user_id", values.for_user_id);
 
     const response = await Delivery.create(formData);
 
-    console.log("response", response);
+    console.log("Respuesta del servidor de la entrega creada:", response);
     reset();
   };
 
@@ -171,87 +131,24 @@ const DeliveryPage = () => {
             <input type="file" id="image" name="image" {...register("image")} />
             <p>{errors.title?.message}</p>
           </div>
+
           <div>
             <Controller
-              name="provincia"
+              name="address"
               control={control}
               defaultValue=""
-              render={({ field: { ref, ...rest } }) => (
+              render={({ field }) => (
                 <StyledTextField
-                  {...rest}
-                  select
-                  label="Selecciona tu Provincia"
-                  inputRef={ref}
-                >
-                  {provincias.length > 0 &&
-                    provincias.map((option) => (
-                      <MenuItem
-                        key={option.id}
-                        value={option.name}
-                        onClick={() => setProvinciaId(option.id)}
-                      >
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                </StyledTextField>
+                  {...field}
+                  label="Ingrese su dirección exacta"
+                  variant="outlined"
+                  size="small"
+                />
               )}
             />
-            <p>{errors.provincia?.message}</p>
+            <p>{errors.address?.message}</p>
           </div>
-          <div>
-            <Controller
-              name="canton"
-              control={control}
-              defaultValue=""
-              render={({ field: { ref, ...rest } }) => (
-                <StyledTextField
-                  {...rest}
-                  select
-                  label="Selecciona tu Cantón"
-                  inputRef={ref}
-                >
-                  {cantones.length > 0 &&
-                    cantones.map((option) => (
-                      <MenuItem
-                        key={option.id}
-                        value={option.name}
-                        onClick={() => setCantonId(option.id)}
-                      >
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                </StyledTextField>
-              )}
-            />
-            <p>{errors.canton?.message}</p>
-          </div>
-          <div>
-            <Controller
-              name="parroquia"
-              control={control}
-              defaultValue=""
-              render={({ field: { ref, ...rest } }) => (
-                <StyledTextField
-                  {...rest}
-                  select
-                  label="Selecciona tu Parroquia"
-                  inputRef={ref}
-                >
-                  {parroquias.length > 0 &&
-                    parroquias.map((option) => (
-                      <MenuItem
-                        key={option.id}
-                        value={option.name}
-                        //onClick={() => setCantonId(option.id)}
-                      >
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                </StyledTextField>
-              )}
-            />
-            <p>{errors.parroquia?.message}</p>
-          </div>
+
           <div>
             <Controller
               name="for_user_id"
@@ -301,6 +198,7 @@ const Container = styled.div`
   padding: 15px;
   width: 50%;
   margin: auto;
+  height: 520px;
 `;
 
 const Div = styled.div`

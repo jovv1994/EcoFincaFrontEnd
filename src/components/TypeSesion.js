@@ -27,45 +27,19 @@ export default function TypeSesion() {
     return (
       <Container>
         <Link href="/home/finca">
-          <StyledButton>Ir al home del dueño de finca </StyledButton>
+          <StyledButton>Ir al home del dueño de finca</StyledButton>
         </Link>
-        <StyledTypography variant="h6">Finca </StyledTypography>
-        <StyledTypography variant="h6">
-          {user.organization_type}
-        </StyledTypography>
         <Link href="/entregas/entrega">
           <StyledButton>Realizar una entrega</StyledButton>
         </Link>
-        <StyledTypography variant="h6">Bienvenido </StyledTypography>
-        <StyledTypography variant="h6">{user.name}</StyledTypography>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-        >
-          <AccountCircle />
+        <StyledTypography variant="h6">Bienvenido</StyledTypography>
+        <StyledTypography variant="h6">
+          {user.name} {user.lastname}
+        </StyledTypography>
+        <IconButton>
+          <StyledAccountCircle />
         </IconButton>
-        {/* <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose}>Perfil</MenuItem>
-          <MenuItem onClick={handleClose}>Mi cuenta</MenuItem>
-        </Menu> */}
+
         <Logout />
       </Container>
     );
@@ -76,10 +50,10 @@ export default function TypeSesion() {
       <Link href="/home/acopio">
         <StyledButton>Ir al home del centro de acopio </StyledButton>
       </Link>
-      <StyledTypography variant="h6">Centro de acopio </StyledTypography>
-      <StyledTypography variant="h6">{user.organization_type}</StyledTypography>
-      <StyledTypography variant="h6">Bienvenido </StyledTypography>
-      <StyledTypography variant="h6">{user.name}</StyledTypography>
+      <StyledTypography variant="h6">Bienvenido</StyledTypography>
+      <StyledTypography variant="h6">
+        {user.name} {user.lastname}
+      </StyledTypography>
       <IconButton
         size="large"
         aria-label="account of current user"
@@ -90,24 +64,6 @@ export default function TypeSesion() {
       >
         <AccountCircle />
       </IconButton>
-      {/* <Menu
-        id="menu-appbar"
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>Perfil</MenuItem>
-        <MenuItem onClick={handleClose}>Mi cuenta</MenuItem>
-      </Menu> */}
       <Logout />
     </Container>
   );
@@ -115,7 +71,7 @@ export default function TypeSesion() {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: auto auto auto auto auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto auto;
   justify-content: space-evenly;
   align-content: center;
   width: 100%;
@@ -133,4 +89,10 @@ const StyledButton = styled(Button)`
 
 const StyledTypography = styled(Typography)`
   margin: 10px;
+  color: #1b4332;
+  font-size: 25px;
+`;
+
+const StyledAccountCircle = styled(AccountCircle)`
+  font-size: 35px;
 `;

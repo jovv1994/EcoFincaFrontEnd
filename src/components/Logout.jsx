@@ -9,11 +9,7 @@ const Logout = () => {
   const handleLogout = () => {
     logout();
   };
-  return (
-    <div>
-      <StyledButton onClick={handleLogout}>Cerrar sesión</StyledButton>
-    </div>
-  );
+  return <StyledButton onClick={handleLogout}>Cerrar sesión</StyledButton>;
 };
 
 export default Logout;

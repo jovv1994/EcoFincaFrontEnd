@@ -40,6 +40,7 @@ export default function DeliveryTable(props) {
         <Head>
           <Strong>Fecha</Strong>
           <Strong>Número de envases</Strong>
+          <Strong>Imagen</Strong>
           <Strong>Centro de acopio</Strong>
           <Strong>Estado de la entrega</Strong>
           <Strong>Opciones</Strong>
@@ -48,6 +49,7 @@ export default function DeliveryTable(props) {
         <Head>
           <Strong>Fecha</Strong>
           <Strong>Descripción</Strong>
+          <Strong>Imagen</Strong>
           <Strong>Finca</Strong>
           <Strong>Ubicación</Strong>
           <Strong>Opciones de recolección</Strong>
@@ -70,19 +72,24 @@ const Container = styled.div`
 const Table = styled.table`
   background: #74c69d;
   border: 2px solid white;
-  border-radius: 5px;
+  border-radius: 15px;
   padding: 5px;
   margin-top: 5px;
 `;
 
 const Head = styled.div`
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: 180px 180px 180px 180px 180px 180px;
   border: 2px solid white;
-  border-radius: 5px;
-  justify-content: space-evenly;
+  border-radius: 15px;
+  justify-content: space-between;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 `;
 
 const Strong = styled.strong`
   color: #1b4332;
+  text-align: center;
 `;
