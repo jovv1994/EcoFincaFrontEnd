@@ -53,7 +53,7 @@ export async function getStaticProps() {
 export async function getStaticPaths() {
   return {
     paths: [{ params: { type: "finca" } }, { params: { type: "acopio" } }],
-    fallback: true,
+    fallback: false,
   };
 }
 /*-------------------------------Componente principal----------------------------------------*/
