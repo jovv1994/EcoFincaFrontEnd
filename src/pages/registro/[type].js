@@ -41,7 +41,7 @@ const schema = yup.object().shape({
     .required("Una breve descripción de sus productos"),
 });
 /*------------------------Obtención de datos para las provincias--------------------------- */
-export async function getStaticProps() {
+/*export async function getStaticProps() {
   const responseProvincia = await Provincia.all();
   const dataProvincia = responseProvincia.data;
 
@@ -55,9 +55,9 @@ export async function getStaticPaths() {
     paths: [{ params: { type: "finca" } }, { params: { type: "acopio" } }],
     fallback: false,
   };
-}
+}*/
 /*-------------------------------Componente principal----------------------------------------*/
-const RegisterPage = ({ dataProvincia }) => {
+const RegisterPage = () => {
   const router = useRouter();
   const { type } = router.query; //Obtener el valor de la ruta dinámica
 
@@ -77,8 +77,17 @@ const RegisterPage = ({ dataProvincia }) => {
   const [parroquias, setParroquias] = useState([]);
 
   useEffect(() => {
-    setProvincias(dataProvincia);
-    console.log("Provincias:", dataProvincia);
+    const getData = async () => {
+      try {
+        const dataProvincia = await Provincia.all();
+        setProvincias(dataProvincia.data);
+        console.log("Provincias:", dataProvincia);
+      } catch (e) {
+        console.log("e", e);
+      }
+    };
+
+    getData();
   }, []);
 
   useEffect(() => {
