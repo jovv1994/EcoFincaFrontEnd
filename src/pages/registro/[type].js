@@ -34,7 +34,6 @@ const schema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password"), null], "Las claves no coinciden")
     .required("Confirme su contraseña"),
-  address: yup.string().required("La dirección es requerida"),
   organization_type: yup.string().required("Ingrese el nombre de su finca"),
   description: yup
     .string()
@@ -250,40 +249,23 @@ const RegisterPage = ({ dataProvincia }) => {
             />
             <p>{errors.password?.message}</p>
           </div>
-          {
-            <div>
-              <Controller
-                name="password_confirmation"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <StyledTextField
-                    {...field}
-                    type="password"
-                    label="Confirma tu contraseña"
-                    variant="outlined"
-                    size="small"
-                  />
-                )}
-              />
-              <p>{errors.password_confirmation?.message}</p>
-            </div>
-          }
+
           <div>
             <Controller
-              name="address"
+              name="password_confirmation"
               control={control}
               defaultValue=""
               render={({ field }) => (
                 <StyledTextField
                   {...field}
-                  label="Ingresa tu dirección"
+                  type="password"
+                  label="Confirma tu contraseña"
                   variant="outlined"
                   size="small"
                 />
               )}
             />
-            <p>{errors.address?.message}</p>
+            <p>{errors.password_confirmation?.message}</p>
           </div>
 
           <div>
