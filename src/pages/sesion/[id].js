@@ -10,6 +10,7 @@ import styled from "styled-components";
 import Layout from "@/components/Layout";
 import Image from "next/image";
 import Routes from "@/constants/routes";
+import withoutAuth from "@/hocs/withoutAuth";
 
 /*----------------------Validación de datos---------------------------*/
 const schema = yup.object().shape({
@@ -43,8 +44,11 @@ const LoginPage = () => {
       };
 
       const response = await login(userData);
-      console.log("Datos devueltos después del inicio de sesión:", response);
-      setResult("User logged in");
+      console.log(
+        "Datos devueltos después del inicio de sesión:",
+        response.data
+      );
+      setResult("Inicio de sesión exitosa");
       const role = response.data.userResource.role;
       console.log(role);
       reset();
@@ -147,7 +151,7 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withoutAuth(LoginPage);
 /*------------------------Estilos con Styled Component------------------*/
 const Container = styled.div`
   display: grid;

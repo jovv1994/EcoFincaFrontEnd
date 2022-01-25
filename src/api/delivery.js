@@ -4,6 +4,7 @@ const Delivery = {
   create: (data) => {
     return api.post("/deliveries", data);
   },
+
   allPost: () => {
     const token = localStorage.getItem("id_token");
 
@@ -27,12 +28,17 @@ const Delivery = {
     );
   },
 
-  updateDelivery: (id, newState) => {
+  updateDelivery: (id, description, quantity, address, for_user_id) => {
     const token = localStorage.getItem("id_token");
 
     return api.put(
-      "/deliveries/" + id,
-      { state: newState },
+      "/deliveriesupdate/" + id,
+      {
+        description: description,
+        quantity: quantity,
+        address: address,
+        for_user_id: for_user_id,
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,

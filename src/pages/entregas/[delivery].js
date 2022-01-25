@@ -15,8 +15,6 @@ import Layout from "@/components/Layout";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
 import withAuth from "@/hocs/withAuth";
-import Provincia from "@/api/provincias";
-import Canton from "@/api/cantones";
 import User from "@/api/user";
 
 /*-------------------------Validacion de datos--------------------------*/
@@ -127,6 +125,7 @@ const DeliveryPage = () => {
             />
             <p>{errors.quantity?.message}</p>
           </div>
+
           <div>
             <input type="file" id="image" name="image" {...register("image")} />
             <p>{errors.title?.message}</p>

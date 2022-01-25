@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import FormUpdate from "@/components/FormUpdate";
+import FormNotification from "@/components/FormNotification";
 import styled from "styled-components";
 
-export default function FormDialogUpdate({ open, handleClose, delivery }) {
+export default function FormDialogNotification({
+  open,
+  handleClose,
+  delivery,
+}) {
   return (
     <Dialog open={open} onClose={handleClose}>
       <StyledDialogContent>
-        <FormUpdate delivery={delivery} />
+        <FormNotification delivery={delivery} />
       </StyledDialogContent>
       <Button onClick={handleClose}>Cancel</Button>
     </Dialog>

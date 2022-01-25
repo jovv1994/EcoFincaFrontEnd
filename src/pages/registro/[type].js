@@ -15,9 +15,6 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/auth";
 import Routes from "@/constants/routes";
 import Image from "next/image";
-import Provincia from "@/api/provincias";
-import Canton from "@/api/cantones";
-
 /*-------------------------Validación de datos--------------------------*/
 const schema = yup.object().shape({
   name: yup.string().required("El nombre es obligatorio"),
@@ -40,22 +37,6 @@ const schema = yup.object().shape({
     .max(200)
     .required("Una breve descripción de sus productos"),
 });
-/*------------------------Obtención de datos para las provincias--------------------------- */
-/*export async function getStaticProps() {
-  const responseProvincia = await Provincia.all();
-  const dataProvincia = responseProvincia.data;
-
-  return {
-    props: { dataProvincia },
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [{ params: { type: "finca" } }, { params: { type: "acopio" } }],
-    fallback: false,
-  };
-}*/
 /*-------------------------------Componente principal----------------------------------------*/
 const RegisterPage = () => {
   const router = useRouter();
@@ -69,54 +50,6 @@ const RegisterPage = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const [provincias, setProvincias] = useState([]);
-  const [provinciaId, setProvinciaId] = useState("");
-  const [cantones, setCantones] = useState([]);
-  const [cantonId, setCantonId] = useState("");
-  const [parroquias, setParroquias] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const dataProvincia = await Provincia.all();
-        setProvincias(dataProvincia.data);
-        console.log("Provincias:", dataProvincia);
-      } catch (e) {
-        console.log("e", e);
-      }
-    };
-
-    getData();
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await Provincia.cantones(provinciaId);
-        console.log("CANTONES DE PROVINCIA " + provinciaId, response.data);
-        setCantones(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    getData();
-  }, [provinciaId]);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await Canton.parroquias(cantonId);
-        console.log("PARROQUIAS DE CANTON" + cantonId, response.data);
-        setParroquias(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    getData();
-  }, [cantonId]);
 
   const [result, setResult] = useState("");
   const [errorsList, setErrorsList] = useState([]);
@@ -320,87 +253,6 @@ const RegisterPage = () => {
               />
               <p>{errors.description?.message}</p>
             </div>
-            <div>
-              <Controller
-                name="provincia_id"
-                control={control}
-                defaultValue=""
-                render={({ field: { ref, ...rest } }) => (
-                  <StyledTextField
-                    {...rest}
-                    select
-                    label="Selecciona tu Provincia"
-                    inputRef={ref}
-                  >
-                    {provincias.length > 0 &&
-                      provincias.map((option) => (
-                        <MenuItem
-                          key={option.id}
-                          value={option.id}
-                          onClick={() => setProvinciaId(option.id)}
-                        >
-                          {option.name}
-                        </MenuItem>
-                      ))}
-                  </StyledTextField>
-                )}
-              />
-              <p>{errors.provincia?.message}</p>
-            </div>
-            <div>
-              <Controller
-                name="canton_id"
-                control={control}
-                defaultValue=""
-                render={({ field: { ref, ...rest } }) => (
-                  <StyledTextField
-                    {...rest}
-                    select
-                    label="Selecciona tu Cantón"
-                    inputRef={ref}
-                  >
-                    {cantones.length > 0 &&
-                      cantones.map((option) => (
-                        <MenuItem
-                          key={option.id}
-                          value={option.id}
-                          onClick={() => setCantonId(option.id)}
-                        >
-                          {option.name}
-                        </MenuItem>
-                      ))}
-                  </StyledTextField>
-                )}
-              />
-              <p>{errors.canton?.message}</p>
-            </div>
-            <div>
-              <Controller
-                name="parroquia_id"
-                control={control}
-                defaultValue=""
-                render={({ field: { ref, ...rest } }) => (
-                  <StyledTextField
-                    {...rest}
-                    select
-                    label="Selecciona tu Parroquia"
-                    inputRef={ref}
-                  >
-                    {parroquias.length > 0 &&
-                      parroquias.map((option) => (
-                        <MenuItem
-                          key={option.id}
-                          value={option.id}
-                          //onClick={() => setCantonId(option.id)}
-                        >
-                          {option.name}
-                        </MenuItem>
-                      ))}
-                  </StyledTextField>
-                )}
-              />
-              <p>{errors.parroquia?.message}</p>
-            </div>
             {/*<div>
               <Controller
                 name="image"
@@ -438,7 +290,7 @@ const RegisterPage = () => {
             <div>
               <p>
                 ¿Ya tienes una cuenta?{" "}
-                <Link href="/login" passHref>
+                <Link href="/sesion/login" passHref>
                   <StyledMuiLink>Iniciar sesión</StyledMuiLink>
                 </Link>
               </p>

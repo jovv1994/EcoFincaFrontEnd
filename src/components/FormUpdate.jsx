@@ -8,11 +8,9 @@ import {
   TextField,
   MenuItem,
 } from "@material-ui/core";
-import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
-import withAuth from "@/hocs/withAuth";
 import User from "@/api/user";
 
 /*-------------------------Validacion de datos--------------------------*/
@@ -54,15 +52,28 @@ export default function FormUpdate({ delivery }) {
   const onSubmit = async (values) => {
     console.log("values", values);
 
-    const formData = new FormData();
-    formData.append("description", values.description);
-    formData.append("quantity", values.quantity);
-    formData.append("image", values.image[0]);
-    formData.append("for_user_id", values.for_user_id);
+    const id = delivery.id;
+    const description = values.description;
+    const quantity = values.quantity;
+    const address = values.address;
+    const for_user_id = values.for_user_id;
 
-    const response = await Delivery.create(formData);
+    console.log(id);
 
-    console.log("response", response);
+    try {
+      const response = await Delivery.updateDelivery(
+        id,
+        description,
+        quantity,
+        address,
+        for_user_id
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+
+    //console.log("response", response);
     reset();
   };
 
@@ -150,11 +161,7 @@ export default function FormUpdate({ delivery }) {
               >
                 {collectionCenters.length > 0 &&
                   collectionCenters.map((option) => (
-                    <MenuItem
-                      key={option.id}
-                      value={option.id}
-                      //onClick={() => setCantonId(option.id)}
-                    >
+                    <MenuItem key={option.id} value={option.id}>
                       {option.organization_type}
                     </MenuItem>
                   ))}
