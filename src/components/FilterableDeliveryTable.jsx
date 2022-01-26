@@ -3,7 +3,7 @@ import SearchBar from "@/components/SearchBar";
 import DeliveryTable from "@/components/DeliveryTable";
 import styled from "styled-components";
 
-export default function FilterableDeliveryTable(props) {
+export default function FilterableDeliveryTable({ deliveries, role }) {
   const [filterText, setFilterText] = useState("");
   const [inPending, setInPending] = useState(false);
 
@@ -22,13 +22,13 @@ export default function FilterableDeliveryTable(props) {
         inPending={inPending}
         onFilterTextChange={handleFilterTextChange}
         onInPendingChange={handleInPendingChange}
-        role={props.role}
+        role={role}
       />
       <DeliveryTable
-        deliveries={props.deliveries}
+        deliveries={deliveries}
         filterText={filterText}
         inPending={inPending}
-        role={props.role}
+        role={role}
       />
     </Container>
   );

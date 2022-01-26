@@ -15,12 +15,8 @@ import User from "@/api/user";
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
-  description: yup.string().max(200).required("La descripción es obligatoria"),
-  quantity: yup.string().required("Ingrese la cantidad de botellas"),
-  image: yup.mixed().required("La imagen es obligatoria"),
-  for_user_id: yup
-    .string()
-    .required("Debe elegir un centro de acopio para su entrega"),
+  date: yup.string().max(200).required("La descripción es obligatoria"),
+  hour: yup.string().required("Ingrese la cantidad de botellas"),
 });
 /*-----------------------------------------------------------------------*/
 export default function FormNotification({ delivery }) {
@@ -34,37 +30,26 @@ export default function FormNotification({ delivery }) {
     resolver: yupResolver(schema),
   });
 
-  const [collectionCenters, setCollectionCenters] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const anotherResponse = await User.getCollectionCenters();
-        setCollectionCenters(anotherResponse.data);
-      } catch (e) {
-        console.log("e", e);
-      }
-    };
-
-    getData();
-  }, []);
-
   const onSubmit = async (values) => {
     console.log("values", values);
 
-    const formData = new FormData();
-    formData.append("description", values.description);
-    formData.append("quantity", values.quantity);
-    formData.append("image", values.image[0]);
-    formData.append("for_user_id", values.for_user_id);
+    const id = delivery.id;
+    const date = values.date;
+    const hour = values.hour;
+
+    console.log(id);
 
     try {
-      const response = await Delivery.updateDelivery(delivery.id, formData);
+      const response = await Delivery.updateDeliveryNotification(
+        id,
+        date,
+        hour
+      );
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
 
-    //console.log("response", response);
     reset();
   };
 
@@ -81,17 +66,16 @@ export default function FormNotification({ delivery }) {
         />
       </Div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
+        <Input type="date" id="date" name="date" required />
         <Input
           type="time"
-          id="hora"
-          name="hora"
+          id="hour"
+          name="hour"
           min="09:00"
           max="16:00"
           required
         />
-        <Input type="date" id="fecha" name="fecha" required />
-
         <StyledButton type="submit">Enviar</StyledButton>
       </form>
     </Container>

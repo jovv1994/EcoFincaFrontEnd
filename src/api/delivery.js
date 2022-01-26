@@ -14,6 +14,7 @@ const Delivery = {
       },
     });
   },
+
   updateAcopio: (id, newState) => {
     const token = localStorage.getItem("id_token");
 
@@ -38,6 +39,23 @@ const Delivery = {
         quantity: quantity,
         address: address,
         for_user_id: for_user_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
+
+  updateDeliveryNotification: (id, date, hour) => {
+    const token = localStorage.getItem("id_token");
+
+    return api.put(
+      "/deliveriesupdatenotification/" + id,
+      {
+        date: date,
+        hour: hour,
       },
       {
         headers: {

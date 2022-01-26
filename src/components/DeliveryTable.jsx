@@ -2,41 +2,43 @@ import React from "react";
 import DeliveryRow from "@/components/DeliveryRow";
 import styled from "styled-components";
 
-export default function DeliveryTable(props) {
-  const filterText = props.filterText;
-  const inPending = props.inPending;
-
+export default function DeliveryTable({
+  deliveries,
+  filterText,
+  inPending,
+  role,
+}) {
   const rows = [];
 
-  if (props.role === "finca") {
-    props.deliveries.forEach((delivery) => {
+  if (role === "finca") {
+    deliveries.forEach((delivery) => {
       if (delivery.delivery_manager.indexOf(filterText) === -1) {
         return;
       }
-      if (inPending && !delivery.state === "pendiente") {
+      if (inPending && !delivery.state === "Pendiente") {
         return;
       }
       rows.push(
-        <DeliveryRow delivery={delivery} key={delivery.id} role={props.role} />
+        <DeliveryRow key={delivery.id} delivery={delivery} role={role} />
       );
     });
   } else {
-    props.deliveries.forEach((delivery) => {
+    deliveries.forEach((delivery) => {
       if (delivery.delivery_creator.indexOf(filterText) === -1) {
         return;
       }
-      if (inPending && !delivery.state === "pendiente") {
+      if (inPending && !delivery.state === "Pendiente") {
         return;
       }
       rows.push(
-        <DeliveryRow delivery={delivery} key={delivery.id} role={props.role} />
+        <DeliveryRow key={delivery.id} delivery={delivery} role={role} />
       );
     });
   }
 
   return (
     <Container>
-      {props.role === "finca" ? (
+      {role === "finca" ? (
         <Head>
           <Strong>Fecha</Strong>
           <Strong>Número de envases</Strong>

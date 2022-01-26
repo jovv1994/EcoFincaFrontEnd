@@ -2,30 +2,36 @@ import React from "react";
 import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function SearchBar(props) {
+export default function SearchBar({
+  onFilterTextChange,
+  onInPendingChange,
+  role,
+  filterText,
+  inPending,
+}) {
   function handleFilterTextChange(e) {
-    props.onFilterTextChange(e.target.value);
+    onFilterTextChange(e.target.value);
   }
 
   function handleInPendingChange(e) {
-    props.onInPendingChange(e.target.checked);
+    onInPendingChange(e.target.checked);
   }
 
   return (
     <Form>
       <StyledSearchIcon />
-      {props.role === "finca" ? (
+      {role === "finca" ? (
         <>
           <Input
             type="text"
             placeholder="Buscar por centro de acopio..."
-            value={props.filterText}
+            value={filterText}
             onChange={handleFilterTextChange}
           />
           <P>
             <input
               type="checkbox"
-              checked={props.inPending}
+              checked={inPending}
               onChange={handleInPendingChange}
             />{" "}
             Mostrar solo entregas pendientes
@@ -36,13 +42,13 @@ export default function SearchBar(props) {
           <Input
             type="text"
             placeholder="Buscar por finca..."
-            value={props.filterText}
+            value={filterText}
             onChange={handleFilterTextChange}
           />
           <P>
             <input
               type="checkbox"
-              checked={props.inPending}
+              checked={inPending}
               onChange={handleInPendingChange}
             />{" "}
             Mostrar solo entregas recolectadas

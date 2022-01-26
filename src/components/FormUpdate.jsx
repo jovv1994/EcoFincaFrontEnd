@@ -72,8 +72,6 @@ export default function FormUpdate({ delivery }) {
     } catch (error) {
       console.log(error);
     }
-
-    //console.log("response", response);
     reset();
   };
 

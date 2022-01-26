@@ -1,94 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "@material-ui/core/Button";
-import FormDialogUpdate from "@/components/FormDialogUpdate";
-import FormDialogNotification from "@/components/FormDialogNotification";
 import Image from "next/image";
-import Delivery from "@/api/delivery";
+import Options from "@/components/Options";
 
 export default function DeliveryRow({ delivery, role }) {
-  const [open, setOpen] = useState(false);
-  const [stateDelivery, setStateDelivery] = useState("Pendiente");
-  let column;
+  const [stateDelivery, setStateDelivery] = useState(delivery.state);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleStateDeliveryChange = (stateDelivery) => {
+    setStateDelivery(stateDelivery);
   };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleStateRejected = async () => {
-    try {
-      const response = await Delivery.updateAcopio(delivery.id, "Rechazada");
-      setStateCollection(true);
-      console.log(response);
-      setStateDelivery("Rechazada");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleStateAccepted = async () => {
-    try {
-      const response = await Delivery.updateAcopio(
-        delivery.id,
-        "Pendiente de retiro"
-      );
-      console.log(response);
-      setStateDelivery("Pendiente de retiro");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  if (delivery.state === "pendiente" && role === "finca") {
-    column = (
-      <Column>
-        <StyledButton onClick={handleClickOpen}>Editar</StyledButton>
-        <FormDialogUpdate
-          open={open}
-          handleClose={handleClose}
-          delivery={delivery}
-        />
-      </Column>
-    );
-  } else if (delivery.state === "Pendiente de retiro" && role === "finca") {
-    column = (
-      <Column>
-        <StyledButton>Ver notificación de retiro</StyledButton>
-      </Column>
-    );
-  } else if (delivery.state === "pendiente" && role === "acopio") {
-    column = (
-      <Column>
-        <Div>
-          <StyledButton onClick={handleStateAccepted}>
-            Aceptar entrega
-          </StyledButton>
-          <StyledButton onClick={handleStateRejected}>
-            Rechazar entrega
-          </StyledButton>
-        </Div>
-      </Column>
-    );
-  } else if (delivery.state === "Pendiente de retiro" && role === "acopio") {
-    column = (
-      <Column>
-        <StyledButton onClick={handleClickOpen}>
-          Enviar notificación de retiro
-        </StyledButton>
-        <FormDialogNotification
-          open={open}
-          handleClose={handleClose}
-          delivery={delivery}
-        />
-      </Column>
-    );
-  } else if (delivery.state === "Rechazada" && role === "acopio") {
-    column = <Strong>Entrega rechazada</Strong>;
-  }
 
   return (
     <>
@@ -98,7 +18,7 @@ export default function DeliveryRow({ delivery, role }) {
           <Column>{delivery.quantity}</Column>
           <Column>
             <Image
-              src={"/" + delivery.image} // Route of the image file
+              src={"/" + delivery.image}
               height={100} // Desired size with correct aspect ratio
               width={100} // Desired size with correct aspect ratio
               alt="Logo"
@@ -106,7 +26,14 @@ export default function DeliveryRow({ delivery, role }) {
           </Column>
           <Column>{delivery.delivery_manager}</Column>
           <Column>{delivery.state}</Column>
-          {column}
+          <Column>
+            <Options
+              delivery={delivery}
+              role={role}
+              stateDelivery={stateDelivery}
+              onStateDeliveryChange={handleStateDeliveryChange}
+            />
+          </Column>
         </Row>
       ) : (
         <Row>
@@ -114,15 +41,22 @@ export default function DeliveryRow({ delivery, role }) {
           <Column>{delivery.description}</Column>
           <Column>
             <Image
-              src="/images/logo.svg" // Route of the image file
+              src="/images/logo.svg"
               height={25} // Desired size with correct aspect ratio
               width={25} // Desired size with correct aspect ratio
               alt="Logo"
             />
           </Column>
           <Column>{delivery.delivery_creator}</Column>
-          <Column style={{ width: "200px" }}>direccion</Column>
-          {column}
+          <Column>{delivery.address}</Column>
+          <Column>
+            <Options
+              delivery={delivery}
+              role={role}
+              stateDelivery={stateDelivery}
+              onStateDeliveryChange={handleStateDeliveryChange}
+            />
+          </Column>
         </Row>
       )}
     </>
@@ -140,25 +74,5 @@ const Row = styled.tr`
 `;
 
 const Column = styled.td`
-  text-align: center;
-`;
-
-const Div = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-`;
-
-const StyledButton = styled(Button)`
-  background: #ffffff;
-  border-radius: 20px;
-  text-align: center;
-  text-decoration: none;
-  color: #1b4332;
-  font-size: 8px;
-  margin: 2px;
-`;
-
-const Strong = styled.strong`
-  color: #1b4332;
   text-align: center;
 `;
