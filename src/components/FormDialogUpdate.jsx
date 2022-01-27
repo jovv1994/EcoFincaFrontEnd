@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
+import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import FormUpdate from "@/components/FormUpdate";
@@ -11,7 +10,6 @@ export default function FormDialogUpdate({ open, handleClose, delivery }) {
       <StyledDialogContent>
         <FormUpdate delivery={delivery} />
       </StyledDialogContent>
-      <Button onClick={handleClose}>Cancel</Button>
     </Dialog>
   );
 }

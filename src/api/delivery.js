@@ -64,6 +64,22 @@ const Delivery = {
       }
     );
   },
+
+  updateDeliveryScore: (id, score) => {
+    const token = localStorage.getItem("id_token");
+
+    return api.put(
+      "/deliveriesupdatescore/" + id,
+      {
+        score: score,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
 };
 
 export default Delivery;

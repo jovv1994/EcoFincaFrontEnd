@@ -1,10 +1,10 @@
 import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import FormNotification from "@/components/FormNotification";
+import FormScore from "@/components/FormScore";
 import styled from "styled-components";
 
-export default function FormDialogNotification({
+export default function FormDialogScore({
   open,
   handleClose,
   delivery,
@@ -13,7 +13,7 @@ export default function FormDialogNotification({
   return (
     <Dialog open={open} onClose={handleClose}>
       <StyledDialogContent>
-        <FormNotification
+        <FormScore
           delivery={delivery}
           onStateDeliveryChange={onStateDeliveryChange}
         />

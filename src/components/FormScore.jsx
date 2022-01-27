@@ -14,11 +14,15 @@ import Delivery from "@/api/delivery";
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
-  date: yup.string().max(200).required("La descripción es obligatoria"),
-  hour: yup.string().required("Ingrese la cantidad de botellas"),
+  score: yup
+    .string()
+    .max(200)
+    .required(
+      "Por favor ingrese una calificación de la recolección de la entrega"
+    ),
 });
 /*-----------------------------------------------------------------------*/
-export default function FormNotification({ delivery, onStateDeliveryChange }) {
+export default function FormScore({ delivery, onStateDeliveryChange }) {
   const {
     handleSubmit,
     formState: { errors },
@@ -32,34 +36,34 @@ export default function FormNotification({ delivery, onStateDeliveryChange }) {
     console.log("values", values);
 
     const id = delivery.id;
-    const date = values.date;
-    const hour = values.hour;
+    const score = values.score;
 
     console.log(id);
 
     try {
-      const responseUpdateNotificationDelivery =
-        await Delivery.updateDeliveryNotification(id, date, hour);
+      const responseUpdateScoreDelivery = await Delivery.updateDeliveryScore(
+        id,
+        score
+      );
       const responseUpdateStateDelivery = await Delivery.updateAcopio(
         delivery.id,
-        "Pendiente de retiro"
+        "Finalizada"
       );
-      console.log(responseUpdateNotificationDelivery);
+      console.log(responseUpdateScoreDelivery);
       console.log(responseUpdateStateDelivery);
     } catch (error) {
       console.log(error);
     }
 
-    onStateDeliveryChange("Pendiente de retiro");
+    onStateDeliveryChange("Finalizada");
 
     reset();
   };
 
-  /*-----------------Renderizado del componente----------------------*/
   return (
     <Container>
       <Div>
-        <Title>Notificación de retiro</Title>
+        <Title>Calificación del centro de acopio</Title>
         <Image
           src="/images/bxs-notepad.svg" // Route of the image file
           height={50} // Desired size with correct aspect ratio
@@ -71,38 +75,18 @@ export default function FormNotification({ delivery, onStateDeliveryChange }) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Controller
-            type="date"
-            name="date"
+            name="score"
             control={control}
-            defaultValue="día/mes/año"
             render={({ field }) => (
               <StyledTextField
                 {...field}
-                label="Ingrese la fecha para el retiro de la entrega"
+                label="Ingrese una calificación del 1 al 5"
                 variant="outlined"
                 size="small"
               />
             )}
           />
-          <p>{errors.description?.message}</p>
-        </div>
-
-        <div>
-          <Controller
-            type="time"
-            name="hour"
-            control={control}
-            defaultValue="24:00"
-            render={({ field }) => (
-              <StyledTextField
-                {...field}
-                label="Ingrese la hora para el retiro de la entrega"
-                variant="outlined"
-                size="small"
-              />
-            )}
-          />
-          <p>{errors.quantity?.message}</p>
+          <p>{errors.score?.message}</p>
         </div>
 
         <Grid>
@@ -140,14 +124,6 @@ const StyledButton = styled(Button)`
   text-decoration: none;
   margin: auto;
   color: #000000;
-`;
-
-const Input = styled.input`
-  background: #ffffff;
-  border-radius: 10px;
-  color: #000000;
-  width: 100%;
-  margin: 10px;
 `;
 
 const Grid = styled.div`

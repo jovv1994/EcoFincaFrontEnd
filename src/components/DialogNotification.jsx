@@ -1,22 +1,14 @@
 import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import FormNotification from "@/components/FormNotification";
+import Notification from "@/components/Notification";
 import styled from "styled-components";
 
-export default function FormDialogNotification({
-  open,
-  handleClose,
-  delivery,
-  onStateDeliveryChange,
-}) {
+export default function DialogNotification({ open, handleClose, delivery }) {
   return (
     <Dialog open={open} onClose={handleClose}>
       <StyledDialogContent>
-        <FormNotification
-          delivery={delivery}
-          onStateDeliveryChange={onStateDeliveryChange}
-        />
+        <Notification delivery={delivery} />
       </StyledDialogContent>
     </Dialog>
   );
