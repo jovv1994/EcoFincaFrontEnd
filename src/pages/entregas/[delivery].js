@@ -67,7 +67,7 @@ const DeliveryPage = () => {
     const formData = new FormData();
     formData.append("description", values.description);
     formData.append("quantity", values.quantity);
-    formData.append("image", values.image[0]);
+    //formData.append("image", values.image[0]);
     formData.append("address", values.address);
     formData.append("for_user_id", values.for_user_id);
 
