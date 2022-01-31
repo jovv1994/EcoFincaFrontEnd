@@ -57,6 +57,8 @@ const LoginPage = () => {
           ? router.push(Routes.HOME_FARM)
           : router.push(Routes.HOME_COLLECTION_CENTER);
       }
+
+      location.reload();
     } catch (e) {
       console.log("e", e.response);
       const { response } = e;

@@ -14,18 +14,21 @@ export default function DeliveryRow({ delivery, role }) {
     <>
       {role === "finca" ? (
         <Row>
-          <Column>{delivery.created_at}</Column>
-          <Column>{delivery.quantity}</Column>
           <Column>
-            <Image
-              src={"/" + delivery.image}
-              height={100} // Desired size with correct aspect ratio
-              width={100} // Desired size with correct aspect ratio
-              alt="Logo"
-            />
+            <strong>{delivery.created_at}</strong>
           </Column>
-          <Column>{delivery.delivery_manager}</Column>
-          <Column>{delivery.state}</Column>
+          <Column>
+            <strong>{delivery.quantity}</strong>
+          </Column>
+          <Column>
+            <strong>{delivery.description}</strong>
+          </Column>
+          <Column>
+            <strong>{delivery.delivery_manager}</strong>
+          </Column>
+          <Column>
+            <strong>{delivery.state}</strong>
+          </Column>
           <Column>
             <Options
               delivery={delivery}
@@ -37,18 +40,21 @@ export default function DeliveryRow({ delivery, role }) {
         </Row>
       ) : (
         <Row>
-          <Column>{delivery.created_at}</Column>
-          <Column>{delivery.description}</Column>
           <Column>
-            <Image
-              src="/images/logo.svg"
-              height={25} // Desired size with correct aspect ratio
-              width={25} // Desired size with correct aspect ratio
-              alt="Logo"
-            />
+            <strong>{delivery.created_at}</strong>
           </Column>
-          <Column>{delivery.delivery_creator}</Column>
-          <Column>{delivery.address}</Column>
+          <Column>
+            <strong>{delivery.description}</strong>
+          </Column>
+          <Column>
+            <strong>{delivery.quantity}</strong>
+          </Column>
+          <Column>
+            <strong>{delivery.delivery_creator}</strong>
+          </Column>
+          <Column>
+            <strong>{delivery.address}</strong>
+          </Column>
           <Column>
             <Options
               delivery={delivery}
@@ -75,4 +81,5 @@ const Row = styled.tr`
 
 const Column = styled.td`
   text-align: center;
+  color: #1b4332;
 `;

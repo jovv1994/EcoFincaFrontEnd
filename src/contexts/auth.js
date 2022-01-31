@@ -49,6 +49,10 @@ function useAuthProvider() {
       console.log("response", response);
       handleUser(response.data);
 
+      let idToken = response.data.token;
+      console.log("Token: ", idToken);
+      localStorage.setItem("id_token", idToken);
+
       return response;
     } catch (error) {
       if (error.response) {
@@ -78,8 +82,8 @@ function useAuthProvider() {
       const response = await User.login(data);
       handleUser(response.data.user);
       let idToken = response.data.token;
-      console.log("Token: ",idToken);
-      localStorage.setItem('id_token', idToken)
+      console.log("Token: ", idToken);
+      localStorage.setItem("id_token", idToken);
       return response;
     } catch (error) {
       if (error.response) {

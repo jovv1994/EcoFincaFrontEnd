@@ -80,6 +80,22 @@ const Delivery = {
       }
     );
   },
+
+  updateStateByFarm: (id, state) => {
+    const token = localStorage.getItem("id_token");
+
+    return api.put(
+      "/deliveriesupdatestatebyfarm/" + id,
+      {
+        state: state,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
 };
 
 export default Delivery;

@@ -27,7 +27,7 @@ export default function DeliveryTable({
       if (delivery.delivery_creator.indexOf(filterText) === -1) {
         return;
       }
-      if (inPending && !delivery.state === "Pendiente") {
+      if (inPending && !delivery.state === "Finalizada") {
         return;
       }
       rows.push(
@@ -40,21 +40,21 @@ export default function DeliveryTable({
     <Container>
       {role === "finca" ? (
         <Head>
-          <Strong>Fecha</Strong>
-          <Strong>Número de envases</Strong>
-          <Strong>Imagen</Strong>
-          <Strong>Centro de acopio</Strong>
-          <Strong>Estado de la entrega</Strong>
-          <Strong>Opciones</Strong>
+          <Strong>FECHA</Strong>
+          <Strong>NÚMERO DE ENVASES</Strong>
+          <Strong>DESCRIPCIÓN</Strong>
+          <Strong>CENTRO DE ACOPIO</Strong>
+          <Strong>ESTADO DE LA ENTREGA</Strong>
+          <Strong>OPCIONES</Strong>
         </Head>
       ) : (
         <Head>
-          <Strong>Fecha</Strong>
-          <Strong>Descripción</Strong>
-          <Strong>Imagen</Strong>
-          <Strong>Finca</Strong>
-          <Strong>Ubicación</Strong>
-          <Strong>Opciones de recolección</Strong>
+          <Strong>FECHA</Strong>
+          <Strong>DESCRIPCIÓN</Strong>
+          <Strong>NÚMERO DE ENVASES</Strong>
+          <Strong>FINCA</Strong>
+          <Strong>UBICACIÓN</Strong>
+          <Strong>OPCIONES DE RECOLECCIÓN</Strong>
         </Head>
       )}
       <Table>{rows}</Table>

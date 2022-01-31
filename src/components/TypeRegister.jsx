@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
-export default function RegisterCollectionCenter() {
+export default function TypeRegister() {
   const router = useRouter();
   const { type, id } = router.query;
 

@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  Button,
-  Link as MuiLink,
-  TextField,
-  MenuItem,
-} from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
-
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
   score: yup
     .string()
     .max(200)
-    .required(
-      "Por favor ingrese una calificación de la recolección de la entrega"
-    ),
+    .required("Por favor ingrese una calificación de la recolección"),
 });
 /*-----------------------------------------------------------------------*/
 export default function FormScore({ delivery, onStateDeliveryChange }) {
@@ -45,7 +37,7 @@ export default function FormScore({ delivery, onStateDeliveryChange }) {
         id,
         score
       );
-      const responseUpdateStateDelivery = await Delivery.updateAcopio(
+      const responseUpdateStateDelivery = await Delivery.updateStateByFarm(
         delivery.id,
         "Finalizada"
       );
@@ -65,9 +57,9 @@ export default function FormScore({ delivery, onStateDeliveryChange }) {
       <Div>
         <Title>Calificación del centro de acopio</Title>
         <Image
-          src="/images/bxs-notepad.svg" // Route of the image file
-          height={50} // Desired size with correct aspect ratio
-          width={50} // Desired size with correct aspect ratio
+          src="/images/bxs-notepad.svg"
+          height={50}
+          width={50}
           alt="Finca"
         />
       </Div>
@@ -89,9 +81,7 @@ export default function FormScore({ delivery, onStateDeliveryChange }) {
           <p>{errors.score?.message}</p>
         </div>
 
-        <Grid>
-          <StyledButton type="submit">Enviar</StyledButton>
-        </Grid>
+        <StyledButton type="submit">Enviar</StyledButton>
       </form>
     </Container>
   );
@@ -124,12 +114,6 @@ const StyledButton = styled(Button)`
   text-decoration: none;
   margin: auto;
   color: #000000;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-around;
 `;
 
 const StyledTextField = styled(TextField)`

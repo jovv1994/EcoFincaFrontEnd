@@ -4,11 +4,19 @@ import DialogContent from "@mui/material/DialogContent";
 import FormUpdate from "@/components/FormUpdate";
 import styled from "styled-components";
 
-export default function FormDialogUpdate({ open, handleClose, delivery }) {
+export default function FormDialogUpdate({
+  open,
+  handleClose,
+  delivery,
+  onStateDeliveryChange,
+}) {
   return (
     <Dialog open={open} onClose={handleClose}>
       <StyledDialogContent>
-        <FormUpdate delivery={delivery} />
+        <FormUpdate
+          delivery={delivery}
+          onStateDeliveryChange={onStateDeliveryChange}
+        />
       </StyledDialogContent>
     </Dialog>
   );

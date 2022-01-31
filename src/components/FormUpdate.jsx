@@ -68,10 +68,16 @@ export default function FormUpdate({ delivery }) {
         address,
         for_user_id
       );
-      console.log(response);
+      const responseUpdateStateDelivery = await Delivery.updateStateByFarm(
+        delivery.id,
+        "Pendiente"
+      );
     } catch (error) {
       console.log(error);
     }
+
+    location.reload();
+
     reset();
   };
 

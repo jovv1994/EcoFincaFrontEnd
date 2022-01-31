@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
@@ -15,6 +15,7 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/auth";
 import Routes from "@/constants/routes";
 import Image from "next/image";
+import withoutAuth from "@/hocs/withoutAuth";
 /*-------------------------Validación de datos--------------------------*/
 const schema = yup.object().shape({
   name: yup.string().required("El nombre es obligatorio"),
@@ -301,7 +302,7 @@ const RegisterPage = () => {
     </Layout>
   );
 };
-export default RegisterPage;
+export default withoutAuth(RegisterPage);
 /*------------------------Estilos con Styled Component------------------*/
 const Container = styled.div`
   background: #74c69d;

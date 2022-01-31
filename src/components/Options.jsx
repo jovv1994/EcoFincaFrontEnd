@@ -16,7 +16,7 @@ export default function Options({
 }) {
   const [open, setOpen] = useState(false);
   let column;
-  var score;
+  let score;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -141,27 +141,26 @@ export default function Options({
           open={open}
           handleClose={handleClose}
           delivery={delivery}
+          onStateDeliveryChange={onStateDeliveryChange}
         />
       </>
     );
   } else if (stateDelivery === "Pendiente" && role === "acopio") {
     column = (
-      <>
-        <Div>
-          <StyledButton onClick={handleClickOpen}>
-            Enviar notificación de retiro
-          </StyledButton>
-          <FormDialogNotification
-            open={open}
-            handleClose={handleClose}
-            delivery={delivery}
-            onStateDeliveryChange={onStateDeliveryChange}
-          />
-          <StyledButton onClick={handleStateDeliveryRejected}>
-            Rechazar entrega
-          </StyledButton>
-        </Div>
-      </>
+      <Div>
+        <StyledButton onClick={handleClickOpen}>
+          Enviar notificación de retiro
+        </StyledButton>
+        <FormDialogNotification
+          open={open}
+          handleClose={handleClose}
+          delivery={delivery}
+          onStateDeliveryChange={onStateDeliveryChange}
+        />
+        <StyledButton onClick={handleStateDeliveryRejected}>
+          Rechazar entrega
+        </StyledButton>
+      </Div>
     );
   } else if (stateDelivery === "Pendiente de retiro" && role === "acopio") {
     column = (
@@ -172,7 +171,7 @@ export default function Options({
   } else if (stateDelivery === "Retirada" && role === "acopio") {
     column = <Strong>Calificación pendiente</Strong>;
   } else if (stateDelivery === "Finalizada" && role === "acopio") {
-    column = { score };
+    column = score;
   } else if (stateDelivery === "Rechazada" && role === "acopio") {
     column = <Strong>Entrega rechazada</Strong>;
   }
