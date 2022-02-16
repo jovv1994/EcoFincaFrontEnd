@@ -3,19 +3,18 @@ import styled from "styled-components";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
 
-export default function Notification({ delivery }) {
-  /*-----------------Renderizado del componente----------------------*/
+export default function NotificationScore({ delivery }) {
   return (
     <Container>
-      <Title>Notificación de retiro</Title>
+      <Title>Comentario de la calificación</Title>
       <Image
-        src="/images/bxs-notepad.svg" // Route of the image file
-        height={50} // Desired size with correct aspect ratio
-        width={50} // Desired size with correct aspect ratio
-        alt="Finca"
+        src="/images/bxs-star-half.svg"
+        height={50}
+        width={50}
+        alt="start"
       />
       <StyledTypography>
-        Su entrega sera retirada el {delivery.date} a las {delivery.hour}
+        La calificación menor a 5 estrellas se debe a: {delivery.scorecomment}
       </StyledTypography>
     </Container>
   );
@@ -23,7 +22,7 @@ export default function Notification({ delivery }) {
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto;
   justify-content: center;
   background: #74c69d;
   padding: 15px;

@@ -3,7 +3,7 @@ import Link from "next/link";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -11,6 +11,13 @@ import Layout from "@/components/Layout";
 import Image from "next/image";
 import Routes from "@/constants/routes";
 import withoutAuth from "@/hocs/withoutAuth";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 /*----------------------Validación de datos---------------------------*/
 const schema = yup.object().shape({
@@ -35,6 +42,12 @@ const LoginPage = () => {
   const [errorsList, setErrorsList] = useState([]);
   const { login } = useAuth();
   const router = useRouter();
+  const [values, setValues] = useState({
+    password: "",
+    passwordConfirmation: "",
+    showPassword: false,
+    showPasswordConfirmation: false,
+  });
 
   const onFinishLog = async (formData) => {
     console.log("Datos recibidos del formulario:", formData);
@@ -81,6 +94,21 @@ const LoginPage = () => {
     }
   };
 
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <Layout>
       <Container>
@@ -114,13 +142,32 @@ const LoginPage = () => {
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <StyledTextField
-                  {...field}
-                  type="password"
-                  label="Contraseña"
-                  variant="outlined"
-                  size="small"
-                />
+                <StyledFormControl {...field}>
+                  <InputLabel>Contraseña</InputLabel>
+                  <OutlinedInput
+                    type={values.showPassword ? "text" : "password"}
+                    value={values.password}
+                    onChange={handleChange("password")}
+                    size="small"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {values.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Contraseña"
+                  />
+                </StyledFormControl>
               )}
             />
             <p>{errors.password?.message}</p>
@@ -130,7 +177,7 @@ const LoginPage = () => {
             <StyledButton type="submit">Iniciar sesión</StyledButton>
             <p>{result}</p>
 
-            <Link href="/" passHref>
+            <Link href="/forgotpassword" passHref>
               <Hiper style={{ textAlign: "center" }}>
                 ¿Olvidaste tu contraseña?
               </Hiper>
@@ -166,6 +213,7 @@ const Container = styled.div`
   padding-bottom: 84.5px;
   width: 50%;
   margin: auto;
+  height: 543px;
 `;
 
 const StyledMuiLink = styled(MuiLink)`
@@ -200,4 +248,11 @@ const Grid = styled.div`
 
 const Hiper = styled.a`
   color: #1b4332;
+`;
+
+const StyledFormControl = styled(FormControl)`
+  background: #ffffff;
+  border-radius: 10px;
+  color: #000000;
+  width: 100%;
 `;

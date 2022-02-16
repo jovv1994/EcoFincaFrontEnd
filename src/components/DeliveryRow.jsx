@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Options from "@/components/Options";
+import MapView from "@/components/MapView";
 
 export default function DeliveryRow({ delivery, role }) {
   const [stateDelivery, setStateDelivery] = useState(delivery.state);

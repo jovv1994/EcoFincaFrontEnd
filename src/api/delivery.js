@@ -96,6 +96,38 @@ const Delivery = {
       }
     );
   },
+
+  updateRejectedByAcopio: (id, rejected) => {
+    const token = localStorage.getItem("id_token");
+
+    return api.put(
+      "/deliveriesupdaterejectedbyacopio/" + id,
+      {
+        rejected: rejected,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
+
+  updateScoreCommentByFarm: (id, scorecomment) => {
+    const token = localStorage.getItem("id_token");
+
+    return api.put(
+      "/deliveriesupdatescorecommentbyfarm/" + id,
+      {
+        scorecomment: scorecomment,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
 };
 
 export default Delivery;

@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  Button,
-  Link as MuiLink,
-  TextField,
-  MenuItem,
-} from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
-  date: yup.string().max(200).required("La descripción es obligatoria"),
-  hour: yup.string().required("Ingrese la cantidad de botellas"),
+  rejected: yup
+    .string()
+    .max(200)
+    .required("Ingrese el comentario por el rechazo de la entrega"),
 });
 /*-----------------------------------------------------------------------*/
-export default function FormNotification({ delivery, onStateDeliveryChange }) {
+export default function FormNotificationRejected({
+  delivery,
+  onStateDeliveryChange,
+}) {
   const {
     handleSubmit,
     formState: { errors },
@@ -32,75 +32,61 @@ export default function FormNotification({ delivery, onStateDeliveryChange }) {
     console.log("values", values);
 
     const id = delivery.id;
-    const date = values.date;
-    const hour = values.hour;
+    const rejected = values.rejected;
 
     console.log(id);
 
     try {
-      const responseUpdateNotificationDelivery =
-        await Delivery.updateDeliveryNotification(id, date, hour);
+      const responseUpdateNotificationRejected =
+        await Delivery.updateRejectedByAcopio(id, rejected);
       const responseUpdateStateDelivery = await Delivery.updateAcopio(
         delivery.id,
-        "Pendiente de retiro"
+        "Rechazada"
       );
-      console.log(responseUpdateNotificationDelivery);
+      console.log(responseUpdateNotificationRejected);
       console.log(responseUpdateStateDelivery);
     } catch (error) {
       console.log(error);
     }
 
-    onStateDeliveryChange("Pendiente de retiro");
+    onStateDeliveryChange("Rechazada");
 
     reset();
   };
 
-  /*-----------------Renderizado del componente----------------------*/
   return (
     <Container>
       <Div>
-        <Title>Notificación de retiro</Title>
+        <Title>Descripción de recolección rechazada</Title>
         <Image
-          src="/images/bxs-notepad.svg" // Route of the image file
-          height={50} // Desired size with correct aspect ratio
-          width={50} // Desired size with correct aspect ratio
+          src="/images/bxs-notepad.svg"
+          height={50}
+          width={50}
           alt="Finca"
         />
       </Div>
 
+      <Subtitle>
+        Por favor, deja una descripción del motivo por el cual la entrega es
+        rechazada para informar al dueño de finca.
+      </Subtitle>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Controller
-            name="date"
+            name="rejected"
             control={control}
             render={({ field }) => (
-              <StyledTextField
+              <TextareaAutosize
                 {...field}
-                type="date"
-                label="Ingrese la fecha para el retiro de la entrega"
-                variant="outlined"
-                size="medium"
+                aria-label="minimum height"
+                minRows={3}
+                placeholder="Escriba su comentario..."
+                style={{ width: 500 }}
               />
             )}
           />
-          <p>{errors.description?.message}</p>
-        </div>
-
-        <div>
-          <Controller
-            name="hour"
-            control={control}
-            render={({ field }) => (
-              <StyledTextField
-                type="time"
-                {...field}
-                label="Ingrese la hora para el retiro de la entrega"
-                variant="outlined"
-                size="medium"
-              />
-            )}
-          />
-          <p>{errors.quantity?.message}</p>
+          <p>{errors.rejected?.message}</p>
         </div>
 
         <Grid>

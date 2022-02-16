@@ -3,10 +3,12 @@ import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import FormDialogUpdate from "@/components/FormDialogUpdate";
 import FormDialogNotification from "@/components/FormDialogNotification";
-import FormDialogScore from "@/components/FormDialogScore";
 import DialogNotification from "@/components/DialogNotification";
 import Delivery from "@/api/delivery";
-import StarIcon from "@mui/icons-material/Star";
+import Rating from "@mui/material/Rating";
+import DialogNotificationRejected from "@/components/DialogNotificationRejected";
+import FormDialogNotificationRejected from "@/components/FormDialogNotificationRejected";
+import FormDialogNotificationScore from "@/components/FormDialogNotificationScore";
 
 export default function Options({
   delivery,
@@ -15,8 +17,8 @@ export default function Options({
   onStateDeliveryChange,
 }) {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(3);
   let column;
-  let score;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,62 +38,25 @@ export default function Options({
     onStateDeliveryChange("Retirada");
   };
 
-  const handleStateDeliveryRejected = async () => {
+  const onSubmit = async (score) => {
+    const id = delivery.id;
+    console.log(id, score);
+
     try {
-      const response = await Delivery.updateAcopio(delivery.id, "Rechazada");
-      console.log(response);
+      const responseUpdateScoreDelivery = await Delivery.updateDeliveryScore(
+        id,
+        score
+      );
+      const responseUpdateStateDelivery = await Delivery.updateStateByFarm(
+        id,
+        "Finalizada"
+      );
+      console.log(responseUpdateScoreDelivery);
+      console.log(responseUpdateStateDelivery);
     } catch (error) {
       console.log(error);
     }
-    onStateDeliveryChange("Rechazada");
   };
-
-  switch (delivery.score) {
-    case "1":
-      score = <StarIcon />;
-      break;
-    case "2":
-      score = (
-        <>
-          <StarIcon />
-          <StarIcon />
-        </>
-      );
-      break;
-    case "3":
-      score = (
-        <>
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-        </>
-      );
-      break;
-    case "4":
-      score = (
-        <>
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-        </>
-      );
-      break;
-    case "5":
-      score = (
-        <>
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-          <StarIcon />
-        </>
-      );
-      break;
-    default:
-      score = <Strong>Sin calificación</Strong>;
-      break;
-  }
 
   if (stateDelivery === "Pendiente" && role === "finca") {
     column = (
@@ -119,21 +84,46 @@ export default function Options({
     );
   } else if (stateDelivery === "Retirada" && role === "finca") {
     column = (
+      <Rating
+        name="simple-controlled"
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+          if (newValue < 5) {
+            setOpen(true);
+            <FormDialogNotificationScore
+              open={open}
+              handleClose={handleClose}
+              delivery={delivery}
+              onStateDeliveryChange={onStateDeliveryChange}
+            />;
+          } else {
+            onStateDeliveryChange("Finalizada");
+            onSubmit(newValue);
+          }
+
+          console.log("Valor de la calificación: ", newValue);
+        }}
+      />
+    );
+  } else if (stateDelivery === "Finalizada" && role === "finca") {
+    if (delivery.score < 5) {
+      column = <Strong>Comentario y calificación enviados</Strong>;
+    } else {
+      column = <Strong>Calificación enviada</Strong>;
+    }
+  } else if (stateDelivery === "Rechazada" && role === "finca") {
+    column = (
       <>
-        <StyledButton onClick={handleClickOpen}>Calificar</StyledButton>
-        <FormDialogScore
+        <StyledButton onClick={handleClickOpen}>
+          Ver motivo de rechazo
+        </StyledButton>
+        <DialogNotificationRejected
           open={open}
           handleClose={handleClose}
           delivery={delivery}
           onStateDeliveryChange={onStateDeliveryChange}
         />
-      </>
-    );
-  } else if (stateDelivery === "Finalizada" && role === "finca") {
-    column = <Strong>Calificación enviada</Strong>;
-  } else if (stateDelivery === "Rechazada" && role === "finca") {
-    column = (
-      <>
         <StyledButton onClick={handleClickOpen}>
           Elegir otro centro de acopio
         </StyledButton>
@@ -157,9 +147,13 @@ export default function Options({
           delivery={delivery}
           onStateDeliveryChange={onStateDeliveryChange}
         />
-        <StyledButton onClick={handleStateDeliveryRejected}>
-          Rechazar entrega
-        </StyledButton>
+        <StyledButton onClick={handleClickOpen}>Rechazar entrega</StyledButton>
+        <FormDialogNotificationRejected
+          open={open}
+          handleClose={handleClose}
+          delivery={delivery}
+          onStateDeliveryChange={onStateDeliveryChange}
+        />
       </Div>
     );
   } else if (stateDelivery === "Pendiente de retiro" && role === "acopio") {
@@ -171,9 +165,26 @@ export default function Options({
   } else if (stateDelivery === "Retirada" && role === "acopio") {
     column = <Strong>Calificación pendiente</Strong>;
   } else if (stateDelivery === "Finalizada" && role === "acopio") {
-    column = score;
+    if (delivery.score < 5) {
+      column = (
+        <>
+          <StyledButton onClick={handleClickOpen}>
+            Ver comentario de la calificación
+          </StyledButton>
+          <DialogNotificationScore
+            open={open}
+            handleClose={handleClose}
+            delivery={delivery}
+            onStateDeliveryChange={onStateDeliveryChange}
+          />
+          <Rating name="read-only" value={delivery.score} readOnly />;
+        </>
+      );
+    } else {
+      column = <Rating name="read-only" value={delivery.score} readOnly />;
+    }
   } else if (stateDelivery === "Rechazada" && role === "acopio") {
-    column = <Strong>Entrega rechazada</Strong>;
+    column = <Strong>Entrega rechazada y comentario enviados</Strong>;
   }
   return <>{column}</>;
 }

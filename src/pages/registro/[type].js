@@ -16,6 +16,13 @@ import { useAuth } from "@/contexts/auth";
 import Routes from "@/constants/routes";
 import Image from "next/image";
 import withoutAuth from "@/hocs/withoutAuth";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
 /*-------------------------Validación de datos--------------------------*/
 const schema = yup.object().shape({
   name: yup.string().required("El nombre es obligatorio"),
@@ -42,6 +49,12 @@ const schema = yup.object().shape({
 const RegisterPage = () => {
   const router = useRouter();
   const { type } = router.query; //Obtener el valor de la ruta dinámica
+  const [values, setValues] = React.useState({
+    password: "",
+    passwordConfirmation: "",
+    showPassword: false,
+    showPasswordConfirmation: false,
+  });
 
   const {
     handleSubmit,
@@ -98,6 +111,32 @@ const RegisterPage = () => {
         }
       }
     }
+  };
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleClickShowPasswordConfirmation = () => {
+    setValues({
+      ...values,
+      showPasswordConfirmation: !values.showPasswordConfirmation,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseDownPasswordConfirmation = (event) => {
+    event.preventDefault();
   };
   /*-----------------Renderizado del componente----------------------*/
   return (
@@ -175,19 +214,39 @@ const RegisterPage = () => {
             />
             <p>{errors.email?.message}</p>
           </div>
+
           <div>
             <Controller
               name="password"
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <StyledTextField
-                  {...field}
-                  type="password"
-                  label="Contraseña"
-                  variant="outlined"
-                  size="small"
-                />
+                <StyledFormControl {...field}>
+                  <InputLabel>Contraseña</InputLabel>
+                  <OutlinedInput
+                    type={values.showPassword ? "text" : "password"}
+                    value={values.password}
+                    onChange={handleChange("password")}
+                    size="small"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {values.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Contraseña"
+                  />
+                </StyledFormControl>
               )}
             />
             <p>{errors.password?.message}</p>
@@ -199,13 +258,33 @@ const RegisterPage = () => {
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <StyledTextField
-                  {...field}
-                  type="password"
-                  label="Confirma tu contraseña"
-                  variant="outlined"
-                  size="small"
-                />
+                <StyledFormControl {...field}>
+                  <InputLabel>Confirmar contraseña</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-password"
+                    type={values.showPasswordConfirmation ? "text" : "password"}
+                    value={values.passwordConfirmation}
+                    onChange={handleChange("passwordConfirmation")}
+                    size="small"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPasswordConfirmation}
+                          onMouseDown={handleMouseDownPasswordConfirmation}
+                          edge="end"
+                        >
+                          {values.showPasswordConfirmation ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Contraseña"
+                  />
+                </StyledFormControl>
               )}
             />
             <p>{errors.password_confirmation?.message}</p>
@@ -337,6 +416,13 @@ const StyledButton = styled(Button)`
 `;
 
 const StyledTextField = styled(TextField)`
+  background: #ffffff;
+  border-radius: 10px;
+  color: #000000;
+  width: 100%;
+`;
+
+const StyledFormControl = styled(FormControl)`
   background: #ffffff;
   border-radius: 10px;
   color: #000000;
