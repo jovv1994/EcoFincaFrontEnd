@@ -4,15 +4,14 @@ import Image from "next/image";
 import Typography from "@mui/material/Typography";
 
 export default function Notification({ delivery }) {
-  /*-----------------Renderizado del componente----------------------*/
   return (
     <Container>
       <Title>Notificación de retiro</Title>
       <Image
-        src="/images/bxs-notepad.svg" // Route of the image file
-        height={50} // Desired size with correct aspect ratio
-        width={50} // Desired size with correct aspect ratio
-        alt="Finca"
+        src="/images/bxs-notepad.svg"
+        height={50}
+        width={50}
+        alt="notepad"
       />
       <StyledTypography>
         Su entrega sera retirada el {delivery.date} a las {delivery.hour}

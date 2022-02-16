@@ -6,6 +6,7 @@ import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
@@ -14,7 +15,7 @@ const schema = yup.object().shape({
     .max(200)
     .required("Ingrese el comentario por el rechazo de la entrega"),
 });
-/*-----------------------------------------------------------------------*/
+
 export default function FormNotificationRejected({
   delivery,
   onStateDeliveryChange,
@@ -40,7 +41,7 @@ export default function FormNotificationRejected({
       const responseUpdateNotificationRejected =
         await Delivery.updateRejectedByAcopio(id, rejected);
       const responseUpdateStateDelivery = await Delivery.updateAcopio(
-        delivery.id,
+        id,
         "Rechazada"
       );
       console.log(responseUpdateNotificationRejected);
@@ -62,7 +63,7 @@ export default function FormNotificationRejected({
           src="/images/bxs-notepad.svg"
           height={50}
           width={50}
-          alt="Finca"
+          alt="notepad"
         />
       </Div>
 
@@ -71,7 +72,7 @@ export default function FormNotificationRejected({
         rechazada para informar al dueño de finca.
       </Subtitle>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Controller
             name="rejected"
@@ -89,17 +90,15 @@ export default function FormNotificationRejected({
           <p>{errors.rejected?.message}</p>
         </div>
 
-        <Grid>
-          <StyledButton type="submit">Enviar</StyledButton>
-        </Grid>
-      </form>
+        <StyledButton type="submit">Enviar</StyledButton>
+      </Form>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
   justify-content: center;
   background: #74c69d;
   padding: 15px;
@@ -112,9 +111,21 @@ const Div = styled.div`
   justify-content: center;
 `;
 
+const Form = styled.form`
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-content: center;
+`;
+
 const Title = styled.h1`
   text-align: center;
   color: #1b4332;
+`;
+
+const Subtitle = styled.h4`
+  text-align: center;
+  color: #1b4332;
+  margin: 0;
 `;
 
 const StyledButton = styled(Button)`
@@ -124,25 +135,4 @@ const StyledButton = styled(Button)`
   text-decoration: none;
   margin: auto;
   color: #000000;
-`;
-
-const Input = styled.input`
-  background: #ffffff;
-  border-radius: 10px;
-  color: #000000;
-  width: 100%;
-  margin: 10px;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-around;
-`;
-
-const StyledTextField = styled(TextField)`
-  background: #ffffff;
-  border-radius: 10px;
-  color: #000000;
-  width: 100%;
 `;

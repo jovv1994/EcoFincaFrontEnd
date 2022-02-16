@@ -2,10 +2,11 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import styled from "styled-components";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
@@ -14,7 +15,7 @@ const schema = yup.object().shape({
     .max(200)
     .required("Escriba el comentario por la calificación baja"),
 });
-/*-----------------------------------------------------------------------*/
+
 export default function FormNotificationScore({
   delivery,
   onStateDeliveryChange,
@@ -39,7 +40,7 @@ export default function FormNotificationScore({
     try {
       const responseUpdateNotificationScore =
         await Delivery.updateScoreCommentByFarm(id, scorecomment);
-      const responseUpdateStateDelivery = await Delivery.updateAcopio(
+      const responseUpdateStateDelivery = await Delivery.updateStateByFarm(
         id,
         "Finalizada"
       );
@@ -62,7 +63,7 @@ export default function FormNotificationScore({
           src="/images/bxs-star-half.svg"
           height={50}
           width={50}
-          alt="Finca"
+          alt="star"
         />
       </Div>
 
@@ -70,7 +71,7 @@ export default function FormNotificationScore({
         Por favor, dejanos saber porque no merecemos las 5 estrellas.
       </Subtitle>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Controller
             name="scorecomment"
@@ -85,20 +86,18 @@ export default function FormNotificationScore({
               />
             )}
           />
-          <p>{errors.description?.message}</p>
+          <p>{errors.scorecomment?.message}</p>
         </div>
 
-        <Grid>
-          <StyledButton type="submit">Enviar</StyledButton>
-        </Grid>
-      </form>
+        <StyledButton type="submit">Enviar</StyledButton>
+      </Form>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
   justify-content: center;
   background: #74c69d;
   padding: 15px;
@@ -111,9 +110,21 @@ const Div = styled.div`
   justify-content: center;
 `;
 
+const Form = styled.form`
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-content: center;
+`;
+
 const Title = styled.h1`
   text-align: center;
   color: #1b4332;
+`;
+
+const Subtitle = styled.h4`
+  text-align: center;
+  color: #1b4332;
+  margin: 0;
 `;
 
 const StyledButton = styled(Button)`
@@ -123,25 +134,4 @@ const StyledButton = styled(Button)`
   text-decoration: none;
   margin: auto;
   color: #000000;
-`;
-
-const Input = styled.input`
-  background: #ffffff;
-  border-radius: 10px;
-  color: #000000;
-  width: 100%;
-  margin: 10px;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-around;
-`;
-
-const StyledTextField = styled(TextField)`
-  background: #ffffff;
-  border-radius: 10px;
-  color: #000000;
-  width: 100%;
 `;

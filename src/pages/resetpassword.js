@@ -224,13 +224,6 @@ const StyledButton = styled(Button)`
   margin: auto;
 `;
 
-const StyledTextField = styled(TextField)`
-  background: #ffffff;
-  border-radius: 10px;
-  color: #000000;
-  width: 500px;
-`;
-
 const StyledFormControl = styled(FormControl)`
   background: #ffffff;
   border-radius: 10px;

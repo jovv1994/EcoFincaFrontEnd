@@ -9,6 +9,7 @@ import Rating from "@mui/material/Rating";
 import DialogNotificationRejected from "@/components/DialogNotificationRejected";
 import FormDialogNotificationRejected from "@/components/FormDialogNotificationRejected";
 import FormDialogNotificationScore from "@/components/FormDialogNotificationScore";
+import DialogNotificationScore from "@/components/DialogNotificationScore";
 
 export default function Options({
   delivery,
@@ -17,6 +18,8 @@ export default function Options({
   onStateDeliveryChange,
 }) {
   const [open, setOpen] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
+  const [openRejected, setOpenRejected] = useState(false);
   const [value, setValue] = useState(3);
   let column;
 
@@ -26,6 +29,22 @@ export default function Options({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleClickOpenNotification = () => {
+    setOpenNotification(true);
+  };
+
+  const handleCloseNotification = () => {
+    setOpenNotification(false);
+  };
+
+  const handleClickOpenRejected = () => {
+    setOpenRejected(true);
+  };
+
+  const handleCloseRejected = () => {
+    setOpenRejected(false);
   };
 
   const handleStateDeliveryRetired = async () => {
@@ -84,43 +103,44 @@ export default function Options({
     );
   } else if (stateDelivery === "Retirada" && role === "finca") {
     column = (
-      <Rating
-        name="simple-controlled"
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-          if (newValue < 5) {
-            setOpen(true);
-            <FormDialogNotificationScore
-              open={open}
-              handleClose={handleClose}
-              delivery={delivery}
-              onStateDeliveryChange={onStateDeliveryChange}
-            />;
-          } else {
-            onStateDeliveryChange("Finalizada");
-            onSubmit(newValue);
-          }
-
-          console.log("Valor de la calificación: ", newValue);
-        }}
-      />
+      <>
+        <Rating
+          name="simple-controlled"
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            if (newValue < 5) {
+              setOpen(true);
+              console.log("Valor de la calificación: ", newValue);
+            } else {
+              onStateDeliveryChange("Finalizada");
+              onSubmit(newValue);
+            }
+          }}
+        />
+        <FormDialogNotificationScore
+          open={open}
+          handleClose={handleClose}
+          delivery={delivery}
+          onStateDeliveryChange={onStateDeliveryChange}
+        />
+      </>
     );
   } else if (stateDelivery === "Finalizada" && role === "finca") {
-    if (delivery.score < 5) {
-      column = <Strong>Comentario y calificación enviados</Strong>;
-    } else {
+    if (delivery.score == 5) {
       column = <Strong>Calificación enviada</Strong>;
+    } else {
+      column = <Strong>Comentario y calificación enviados</Strong>;
     }
   } else if (stateDelivery === "Rechazada" && role === "finca") {
     column = (
       <>
-        <StyledButton onClick={handleClickOpen}>
+        <StyledButton onClick={handleClickOpenRejected}>
           Ver motivo de rechazo
         </StyledButton>
         <DialogNotificationRejected
-          open={open}
-          handleClose={handleClose}
+          open={openRejected}
+          handleClose={handleCloseRejected}
           delivery={delivery}
           onStateDeliveryChange={onStateDeliveryChange}
         />
@@ -138,12 +158,12 @@ export default function Options({
   } else if (stateDelivery === "Pendiente" && role === "acopio") {
     column = (
       <Div>
-        <StyledButton onClick={handleClickOpen}>
+        <StyledButton onClick={handleClickOpenNotification}>
           Enviar notificación de retiro
         </StyledButton>
         <FormDialogNotification
-          open={open}
-          handleClose={handleClose}
+          open={openNotification}
+          handleClose={handleCloseNotification}
           delivery={delivery}
           onStateDeliveryChange={onStateDeliveryChange}
         />
@@ -184,7 +204,7 @@ export default function Options({
       column = <Rating name="read-only" value={delivery.score} readOnly />;
     }
   } else if (stateDelivery === "Rechazada" && role === "acopio") {
-    column = <Strong>Entrega rechazada y comentario enviados</Strong>;
+    column = <Strong>Entrega rechazada y comentario enviado</Strong>;
   }
   return <>{column}</>;
 }

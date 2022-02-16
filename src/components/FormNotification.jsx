@@ -14,10 +14,10 @@ import Delivery from "@/api/delivery";
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
-  date: yup.string().max(200).required("La descripción es obligatoria"),
-  hour: yup.string().required("Ingrese la cantidad de botellas"),
+  date: yup.string().max(200).required("La fecha es obligatoria"),
+  hour: yup.string().required("La hora es obligatoria"),
 });
-/*-----------------------------------------------------------------------*/
+
 export default function FormNotification({ delivery, onStateDeliveryChange }) {
   const {
     handleSubmit,
@@ -41,7 +41,7 @@ export default function FormNotification({ delivery, onStateDeliveryChange }) {
       const responseUpdateNotificationDelivery =
         await Delivery.updateDeliveryNotification(id, date, hour);
       const responseUpdateStateDelivery = await Delivery.updateAcopio(
-        delivery.id,
+        id,
         "Pendiente de retiro"
       );
       console.log(responseUpdateNotificationDelivery);
@@ -55,20 +55,22 @@ export default function FormNotification({ delivery, onStateDeliveryChange }) {
     reset();
   };
 
-  /*-----------------Renderizado del componente----------------------*/
   return (
     <Container>
       <Div>
         <Title>Notificación de retiro</Title>
         <Image
-          src="/images/bxs-notepad.svg" // Route of the image file
-          height={50} // Desired size with correct aspect ratio
-          width={50} // Desired size with correct aspect ratio
-          alt="Finca"
+          src="/images/bxs-notepad.svg"
+          height={50}
+          width={50}
+          alt="notepad"
         />
       </Div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Subtitle>
+          Ingrese la fecha y la hora para el retiro de la entrega
+        </Subtitle>
         <div>
           <Controller
             name="date"
@@ -77,13 +79,13 @@ export default function FormNotification({ delivery, onStateDeliveryChange }) {
               <StyledTextField
                 {...field}
                 type="date"
-                label="Ingrese la fecha para el retiro de la entrega"
+                label=""
                 variant="outlined"
                 size="medium"
               />
             )}
           />
-          <p>{errors.description?.message}</p>
+          <p>{errors.date?.message}</p>
         </div>
 
         <div>
@@ -94,19 +96,17 @@ export default function FormNotification({ delivery, onStateDeliveryChange }) {
               <StyledTextField
                 type="time"
                 {...field}
-                label="Ingrese la hora para el retiro de la entrega"
+                label=""
                 variant="outlined"
                 size="medium"
               />
             )}
           />
-          <p>{errors.quantity?.message}</p>
+          <p>{errors.hour?.message}</p>
         </div>
 
-        <Grid>
-          <StyledButton type="submit">Enviar</StyledButton>
-        </Grid>
-      </form>
+        <StyledButton type="submit">Enviar</StyledButton>
+      </Form>
     </Container>
   );
 }
@@ -126,9 +126,21 @@ const Div = styled.div`
   justify-content: center;
 `;
 
+const Form = styled.form`
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  justify-content: center;
+`;
+
 const Title = styled.h1`
   text-align: center;
   color: #1b4332;
+`;
+
+const Subtitle = styled.h4`
+  text-align: center;
+  color: #1b4332;
+  margin: 0;
 `;
 
 const StyledButton = styled(Button)`
@@ -138,20 +150,6 @@ const StyledButton = styled(Button)`
   text-decoration: none;
   margin: auto;
   color: #000000;
-`;
-
-const Input = styled.input`
-  background: #ffffff;
-  border-radius: 10px;
-  color: #000000;
-  width: 100%;
-  margin: 10px;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-around;
 `;
 
 const StyledTextField = styled(TextField)`
