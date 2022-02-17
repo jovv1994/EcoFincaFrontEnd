@@ -1,11 +1,21 @@
 import React from "react";
-import { Map } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 const MapView = () => {
   return (
-    <Map styledcenter={{ lat: "51.52437", len: "13.41053" }} zoom={13}></Map>
+    <MapContainer center={[-0.5122931277063842, -78.57131225137861]} zoom={13}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker position={[-0.5122931277063842, -78.57131225137861]}>
+        <Popup>
+          A pretty CSS3 popup. <br /> Easily customizable.
+        </Popup>
+      </Marker>
+    </MapContainer>
   );
 };
 
-export default Map;
+export default MapView;
