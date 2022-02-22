@@ -121,17 +121,10 @@ function useAuthProvider() {
     await User.sendPasswordResetEmail({ email });
   };
 
-  const confirmPasswordReset = async (
-    email,
-    password,
-    password_confirmation,
-    token
-  ) => {
+  const confirmPasswordReset = async (id, password) => {
     await User.confirmPasswordReset({
-      email,
+      id,
       password,
-      password_confirmation,
-      token,
     });
   };
 

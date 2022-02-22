@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button, Link as MuiLink, TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
 import Image from "next/image";
@@ -15,8 +15,13 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import User from "@/api/user";
 
 const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Ingrese un correo válido")
+    .required("El correo es obligatorio"),
   password: yup
     .string()
     .min(8, "Ingrese al menos 8 caracteres")
@@ -27,11 +32,13 @@ const schema = yup.object().shape({
     .required("Confirme su contraseña"),
 });
 
+var id = 0;
+
 const ResetPassword = () => {
+  const [send, setSend] = useState(false);
   const {
     handleSubmit,
     formState: { errors },
-    reset,
     control,
   } = useForm({
     resolver: yupResolver(schema),
@@ -45,19 +52,33 @@ const ResetPassword = () => {
   });
 
   const onSubmit = async (values) => {
-    console.log("Datos enviados desde el formulario de entregas:", values);
+    console.log(
+      "Datos enviados desde el formulario de restablecimiento de contraseña:",
+      values
+    );
 
-    const formData = new FormData();
-    formData.append("description", values.description);
-    formData.append("quantity", values.quantity);
-    formData.append("image", values.image[0]);
-    formData.append("address", values.address);
-    formData.append("for_user_id", values.for_user_id);
+    const email = values.email;
+    const password = values.password;
+    console.log(email);
+    console.log(password);
 
-    const response = await Delivery.create(formData);
+    const response = await User.showAll();
+    const allUsers = response.data.data;
+    console.log(allUsers);
 
-    console.log("Respuesta del servidor de la entrega creada:", response);
-    reset();
+    allUsers.forEach(function (value) {
+      console.log(value);
+      if (value.email === email) {
+        id = value.id;
+      }
+    });
+
+    console.log(id, password);
+
+    const serverResponse = await User.confirmPasswordReset(id, password);
+    console.log("Respuesta del servidor:", serverResponse);
+
+    setSend(true);
   };
 
   const handleChange = (prop) => (event) => {
@@ -88,96 +109,124 @@ const ResetPassword = () => {
 
   return (
     <Layout>
-      <Container>
-        <Div>
-          <Title>Restablecer la contraseña</Title>
-          <Image
-            src="/images/bxs-notepad.svg"
-            height={50}
-            width={50}
-            alt="Finca"
-          />
-        </Div>
-
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <StyledFormControl {...field}>
-                  <InputLabel>Nueva contraseña</InputLabel>
-                  <OutlinedInput
-                    type={values.showPassword ? "text" : "password"}
-                    value={values.password}
-                    onChange={handleChange("password")}
-                    size="small"
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {values.showPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Nueva contraseña"
-                  />
-                </StyledFormControl>
-              )}
+      {send ? (
+        <ContainerTwo>
+          <Title>
+            Tu contraseña ha sido restablecida, vuelve a iniciar sesión.
+          </Title>
+        </ContainerTwo>
+      ) : (
+        <Container>
+          <Div>
+            <Title>Restablecer la contraseña</Title>
+            <Image
+              src="/images/bxs-notepad.svg"
+              height={50}
+              width={50}
+              alt="Finca"
             />
-            <p>{errors.password?.message}</p>
-          </div>
+          </Div>
 
-          <div>
-            <Controller
-              name="password_confirmation"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <StyledFormControl {...field}>
-                  <InputLabel>Vuelve a escribir la contraseña</InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={values.showPasswordConfirmation ? "text" : "password"}
-                    value={values.passwordConfirmation}
-                    onChange={handleChange("passwordConfirmation")}
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <StyledTextField
+                    {...field}
+                    type="email"
+                    label="Ingresa el correo electrónico con el que te registraste"
+                    variant="outlined"
                     size="small"
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPasswordConfirmation}
-                          onMouseDown={handleMouseDownPasswordConfirmation}
-                          edge="end"
-                        >
-                          {values.showPasswordConfirmation ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Vuelve a escribir la contraseña"
                   />
-                </StyledFormControl>
-              )}
-            />
-            <p>{errors.password_confirmation?.message}</p>
-          </div>
+                )}
+              />
+              <p>{errors.email?.message}</p>
+            </div>
 
-          <StyledButton type="submit">Restablecer</StyledButton>
-        </Form>
-      </Container>
+            <div>
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <StyledFormControl {...field}>
+                    <InputLabel>Nueva contraseña</InputLabel>
+                    <OutlinedInput
+                      type={values.showPassword ? "text" : "password"}
+                      value={values.password}
+                      onChange={handleChange("password")}
+                      size="small"
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {values.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Nueva contraseña"
+                    />
+                  </StyledFormControl>
+                )}
+              />
+              <p>{errors.password?.message}</p>
+            </div>
+
+            <div>
+              <Controller
+                name="password_confirmation"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <StyledFormControl {...field}>
+                    <InputLabel>Vuelve a escribir la contraseña</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-password"
+                      type={
+                        values.showPasswordConfirmation ? "text" : "password"
+                      }
+                      value={values.passwordConfirmation}
+                      onChange={handleChange("passwordConfirmation")}
+                      size="small"
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPasswordConfirmation}
+                            onMouseDown={handleMouseDownPasswordConfirmation}
+                            edge="end"
+                          >
+                            {values.showPasswordConfirmation ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Vuelve a escribir la contraseña"
+                    />
+                  </StyledFormControl>
+                )}
+              />
+              <p>{errors.password_confirmation?.message}</p>
+            </div>
+
+            <StyledButton type="submit">Restablecer</StyledButton>
+          </Form>
+        </Container>
+      )}
     </Layout>
   );
 };
@@ -196,6 +245,18 @@ const Container = styled.div`
   height: 543px;
 `;
 
+const ContainerTwo = styled.div`
+  display: grid;
+  grid-template-rows: auto;
+  justify-content: center;
+  align-content: center;
+  background: #74c69d;
+  padding: 15px;
+  width: 50%;
+  margin: auto;
+  height: 543px;
+`;
+
 const Div = styled.div`
   display: grid;
   grid-template-rows: 75px 75px;
@@ -204,7 +265,7 @@ const Div = styled.div`
 
 const Form = styled.form`
   display: grid;
-  grid-template-rows: 50px 50px;
+  grid-template-rows: 50px 50px 50px;
   justify-content: center;
 `;
 
@@ -225,6 +286,13 @@ const StyledButton = styled(Button)`
 `;
 
 const StyledFormControl = styled(FormControl)`
+  background: #ffffff;
+  border-radius: 10px;
+  color: #000000;
+  width: 500px;
+`;
+
+const StyledTextField = styled(TextField)`
   background: #ffffff;
   border-radius: 10px;
   color: #000000;

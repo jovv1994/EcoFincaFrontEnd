@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button, Link as MuiLink, TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
-import Image from "next/image";
-import Delivery from "@/api/delivery";
 import withoutAuth from "@/hocs/withoutAuth";
+import User from "@/api/user";
+import Image from "next/image";
 
 const schema = yup.object().shape({
   email: yup
@@ -17,68 +17,72 @@ const schema = yup.object().shape({
 });
 
 const ForgotPassword = () => {
+  const [send, setSend] = useState(false);
+
   const {
     handleSubmit,
     formState: { errors },
-    reset,
     control,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (values) => {
-    console.log("Datos enviados desde el formulario de entregas:", values);
+  const onSubmit = async (value) => {
+    console.log("Correo electrónico enviado:", value);
 
     const formData = new FormData();
-    formData.append("description", values.description);
-    formData.append("quantity", values.quantity);
-    formData.append("image", values.image[0]);
-    formData.append("address", values.address);
-    formData.append("for_user_id", values.for_user_id);
+    formData.append("email", value.email);
 
-    const response = await Delivery.create(formData);
+    await User.sendPasswordResetEmail(formData);
 
-    console.log("Respuesta del servidor de la entrega creada:", response);
-    reset();
+    setSend(true);
   };
 
   return (
     <Layout>
-      <Container>
-        <Div>
-          <Title>Recuperación de contraseña</Title>
-          <Image
-            src="/images/bxs-notepad.svg"
-            height={50}
-            width={50}
-            alt="Finca"
-          />
-        </Div>
-
-        <Subtitle>Ingresa el correo con el que te registraste</Subtitle>
-
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <Controller
-              name="email"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <StyledTextField
-                  {...field}
-                  type="email"
-                  label="Correo electrónico"
-                  variant="outlined"
-                  size="small"
-                />
-              )}
+      {send ? (
+        <ContainerTwo>
+          <Title>
+            Revisa tu bandeja de entrada para restablecer tu contraseña.
+          </Title>
+        </ContainerTwo>
+      ) : (
+        <Container>
+          <Div>
+            <Title>Recuperación de contraseña</Title>
+            <Image
+              src="/images/bxs-notepad.svg"
+              height={50}
+              width={50}
+              alt="Finca"
             />
-            <p>{errors.email?.message}</p>
-          </div>
+          </Div>
 
-          <StyledButton type="submit">Recuperar contraseña</StyledButton>
-        </Form>
-      </Container>
+          <Subtitle>Ingresa el correo con el que te registraste</Subtitle>
+
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <StyledTextField
+                    {...field}
+                    type="email"
+                    label="Correo electrónico"
+                    variant="outlined"
+                    size="small"
+                  />
+                )}
+              />
+              <p>{errors.email?.message}</p>
+            </div>
+
+            <StyledButton type="submit">Recuperar contraseña</StyledButton>
+          </Form>
+        </Container>
+      )}
     </Layout>
   );
 };
@@ -88,6 +92,18 @@ export default withoutAuth(ForgotPassword);
 const Container = styled.div`
   display: grid;
   grid-template-rows: 150px 25px 100px;
+  justify-content: center;
+  align-content: center;
+  background: #74c69d;
+  padding: 15px;
+  width: 50%;
+  margin: auto;
+  height: 543px;
+`;
+
+const ContainerTwo = styled.div`
+  display: grid;
+  grid-template-rows: auto;
   justify-content: center;
   align-content: center;
   background: #74c69d;

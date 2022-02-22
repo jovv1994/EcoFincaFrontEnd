@@ -15,7 +15,8 @@ const User = {
   sendPasswordResetEmail: (email) => {
     return api.post("/forgot-password", { email });
   },
-  confirmPasswordReset: ({ id, password }) => {
+  confirmPasswordReset: (id, password) => {
+    console.log(id, password);
     return api.post("/reset-password", {
       id,
       password,
@@ -26,6 +27,10 @@ const User = {
   },
   getCollectionCenters: () => {
     return api.get("/users");
+  },
+
+  showAll: () => {
+    return api.get("/allusers");
   },
 };
 
