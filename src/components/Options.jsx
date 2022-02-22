@@ -127,11 +127,7 @@ export default function Options({
       </>
     );
   } else if (stateDelivery === "Finalizada" && role === "finca") {
-    if (delivery.score == 5) {
-      column = <Strong>Calificación enviada</Strong>;
-    } else {
-      column = <Strong>Comentario y calificación enviados</Strong>;
-    }
+    column = <Strong>Calificación enviada</Strong>;
   } else if (stateDelivery === "Rechazada" && role === "finca") {
     column = (
       <>
@@ -197,7 +193,7 @@ export default function Options({
             delivery={delivery}
             onStateDeliveryChange={onStateDeliveryChange}
           />
-          <Rating name="read-only" value={delivery.score} readOnly />;
+          <Rating name="read-only" value={delivery.score} readOnly />
         </>
       );
     } else {

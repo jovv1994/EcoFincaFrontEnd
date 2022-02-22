@@ -333,22 +333,6 @@ const RegisterPage = () => {
               />
               <p>{errors.description?.message}</p>
             </div>
-            {/*<div>
-              <Controller
-                name="image"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <StyledTextField
-                    {...field}
-                    type="file"
-                    variant="outlined"
-                    size="small"
-                  />
-                )}
-              />
-              <p>{errors.title?.message}</p>
-            </div>*/}
           </div>
           <p>{result}</p>
           {userInfo && (

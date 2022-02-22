@@ -1,8 +1,16 @@
 import api from "./index";
 
 const Delivery = {
-  create: (data) => {
-    return api.post("/deliveries", data);
+  create: (userData, longitude, latitude) => {
+    const token = localStorage.getItem("id_token");
+    return api.post("/deliveries", {
+      ...userData,
+      longitude,
+      latitude,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 
   allPost: () => {
@@ -29,7 +37,7 @@ const Delivery = {
     );
   },
 
-  updateDelivery: (id, description, quantity, address, for_user_id) => {
+  updateDelivery: (id, description, quantity, for_user_id, longitude, latitude) => {
     const token = localStorage.getItem("id_token");
 
     return api.put(
@@ -37,8 +45,9 @@ const Delivery = {
       {
         description: description,
         quantity: quantity,
-        address: address,
         for_user_id: for_user_id,
+        longitude: longitude,
+        latitude: latitude,
       },
       {
         headers: {

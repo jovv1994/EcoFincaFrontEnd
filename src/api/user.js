@@ -15,12 +15,10 @@ const User = {
   sendPasswordResetEmail: (email) => {
     return api.post("/forgot-password", { email });
   },
-  confirmPasswordReset: ({ email, password, password_confirmation, token }) => {
+  confirmPasswordReset: ({ id, password }) => {
     return api.post("/reset-password", {
-      email,
+      id,
       password,
-      password_confirmation,
-      token,
     });
   },
   getAuthenticatedUser: () => {

@@ -2,48 +2,39 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  Button,
-  Link as MuiLink,
-  TextField,
-  MenuItem,
-} from "@material-ui/core";
+import { Button, TextField, MenuItem } from "@material-ui/core";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 import Layout from "@/components/Layout";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
 import withAuth from "@/hocs/withAuth";
 import User from "@/api/user";
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
   description: yup.string().max(200).required("La descripción es obligatoria"),
   quantity: yup.string().required("Ingrese la cantidad de botellas"),
-  image: yup.mixed().required("La imagen es obligatoria"),
-  address: yup.string().required("Ingrese la dirección para el retiro"),
   for_user_id: yup
     .string()
     .required("Debe elegir un centro de acopio para su entrega"),
 });
+
+var longitude=null, latitude=null;
 /*-----------------------------------------------------------------------*/
 const DeliveryPage = () => {
-  /*Obtener el valor de la ruta dinamica*/
-  const router = useRouter();
-  const { type } = router.query;
-
   const {
     handleSubmit,
     formState: { errors },
     reset,
     control,
-    register,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
   const [collectionCenters, setCollectionCenters] = useState([]);
+  const [send, setSend] = useState("Enviar ubicación para el retiro de la entrega");
 
   useEffect(() => {
     const getData = async () => {
@@ -58,20 +49,41 @@ const DeliveryPage = () => {
     getData();
   }, []);
 
-  const onSubmit = async (values) => {
-    console.log("Datos enviados desde el formulario de entregas:", values);
+  const onSubmit = async (formData) => {
+    if(longitude == null || latitude == null){
+      alert("Por favor ingrese la ubicación para poder hacer el retiro de la entrega");
+    }else{
+      console.log("Datos enviados desde el formulario de entregas:", formData);
 
-    const formData = new FormData();
-    formData.append("description", values.description);
-    formData.append("quantity", values.quantity);
-    formData.append("image", values.image[0]);
-    formData.append("address", values.address);
-    formData.append("for_user_id", values.for_user_id);
+    try {
+      const deliveryData = {
+        ...formData,
+      };
 
-    const response = await Delivery.create(formData);
-
-    console.log("Respuesta del servidor de la entrega creada:", response);
-    reset();
+      const response = await Delivery.create(deliveryData, longitude, latitude);
+      console.log(
+        "Respuesta del servidor de la entrega creada:",
+        response.data
+      );
+      reset();
+    } catch (error) {
+      console.log(error);
+    }
+    }
+  };
+  
+  const getLocation = () => {
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function setPosition(position){
+      longitude = position.coords.longitude;
+      console.log(longitude);
+      latitude = position.coords.latitude;
+      console.log(latitude);
+      setSend("Ubicación enviada")
+    });
+    } else { 
+      alert("La geolocalización no es soportada en este navegador.");
+      }
   };
 
   /*-----------------Renderizado del componente----------------------*/
@@ -123,12 +135,7 @@ const DeliveryPage = () => {
             <p>{errors.quantity?.message}</p>
           </div>
 
-          <div>
-            <input type="file" id="image" name="image" {...register("image")} />
-            <p>{errors.title?.message}</p>
-          </div>
-
-          <div>
+          {/*<div>
             <Controller
               name="address"
               control={control}
@@ -143,7 +150,7 @@ const DeliveryPage = () => {
               )}
             />
             <p>{errors.address?.message}</p>
-          </div>
+          </div>*/}
 
           <div>
             <Controller
@@ -172,6 +179,10 @@ const DeliveryPage = () => {
             />
             <p>{errors.for_user_id?.message}</p>
           </div>
+          <StyledLocationButton 
+          onClick={getLocation} 
+          endIcon={<AddLocationAltIcon />}
+          >{send}</StyledLocationButton>
           <Grid>
             <StyledButton type="submit">Publicar Entrega</StyledButton>
             <Link href="/home/finca">
@@ -222,13 +233,19 @@ const StyledButton = styled(Button)`
   color: #000000;
 `;
 
+const StyledLocationButton = styled(Button)`
+  background: #ffffff;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: #000000;
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
 const StyledTextField = styled(TextField)`
   background: #ffffff;
   border-radius: 10px;
   color: #000000;
   width: 100%;
-`;
-
-const StyledMuiLink = styled(MuiLink)`
-  color: #000000;
 `;

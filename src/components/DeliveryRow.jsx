@@ -1,19 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Image from "next/image";
 import Options from "@/components/Options";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
-import MapView from "@/components/MapView";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import Button from "@material-ui/core/Button";
+import DialogMap from "@/components/DialogMap";
 
 export default function DeliveryRow({ delivery, role }) {
   const [stateDelivery, setStateDelivery] = useState(delivery.state);
@@ -76,28 +65,11 @@ export default function DeliveryRow({ delivery, role }) {
           <Column>
             <>
               <StyledButton onClick={handleClickOpen}>Ver mapa</StyledButton>
-              <Dialog
-                fullScreen
+              <DialogMap
                 open={open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
-              >
-                <AppBar sx={{ position: "relative" }}>
-                  <Toolbar>
-                    <IconButton
-                      edge="end"
-                      color="inherit"
-                      onClick={handleClose}
-                      aria-label="close"
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  </Toolbar>
-                </AppBar>
-                <div>
-                  <MapView />
-                </div>
-              </Dialog>
+                handleClose={handleClose}
+                delivery={delivery}
+              />
             </>
           </Column>
           <Column>
@@ -135,6 +107,6 @@ const StyledButton = styled(Button)`
   text-align: center;
   text-decoration: none;
   color: #1b4332;
-  font-size: 8px;
+  font-size: 10px;
   margin: 2px;
 `;

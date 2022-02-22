@@ -12,16 +12,18 @@ import styled from "styled-components";
 import Image from "next/image";
 import Delivery from "@/api/delivery";
 import User from "@/api/user";
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
   description: yup.string().max(200).required("La descripción es obligatoria"),
   quantity: yup.string().required("Ingrese la cantidad de botellas"),
-  image: yup.mixed().required("La imagen es obligatoria"),
+  //image: yup.mixed().required("La imagen es obligatoria"),
   for_user_id: yup
     .string()
     .required("Debe elegir un centro de acopio para su entrega"),
 });
+var longitude, latitude;
 /*-----------------------------------------------------------------------*/
 export default function FormUpdate({ delivery }) {
   const {
@@ -35,6 +37,7 @@ export default function FormUpdate({ delivery }) {
   });
 
   const [collectionCenters, setCollectionCenters] = useState([]);
+  const [send, setSend] = useState("Enviar ubicación para el retiro de la entrega");
 
   useEffect(() => {
     const getData = async () => {
@@ -55,18 +58,22 @@ export default function FormUpdate({ delivery }) {
     const id = delivery.id;
     const description = values.description;
     const quantity = values.quantity;
-    const address = values.address;
     const for_user_id = values.for_user_id;
+    const longitude = delivery.longitude;
+    const latitude = delivery.latitude;
 
     console.log(id);
+    console.log(longitude);
+    console.log(latitude);
 
     try {
       const response = await Delivery.updateDelivery(
         id,
         description,
         quantity,
-        address,
-        for_user_id
+        for_user_id,
+        longitude,
+        latitude
       );
       const responseUpdateStateDelivery = await Delivery.updateStateByFarm(
         delivery.id,
@@ -79,6 +86,20 @@ export default function FormUpdate({ delivery }) {
     location.reload();
 
     reset();
+  };
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function setPosition(position){
+      longitude = position.coords.longitude;
+      console.log(longitude);
+      latitude = position.coords.latitude;
+      console.log(latitude);
+      setSend("Ubicación enviada")
+    });
+    } else { 
+      alert("La geolocalización no es soportada en este navegador.");
+      }
   };
 
   /*-----------------Renderizado del componente----------------------*/
@@ -129,12 +150,12 @@ export default function FormUpdate({ delivery }) {
           <p>{errors.quantity?.message}</p>
         </div>
 
-        <div>
+        {/*<div>
           <input type="file" id="image" name="image" {...register("image")} />
           <p>{errors.title?.message}</p>
-        </div>
+        </div>*/}
 
-        <div>
+        {/*<div>
           <Controller
             name="address"
             control={control}
@@ -149,7 +170,7 @@ export default function FormUpdate({ delivery }) {
             )}
           />
           <p>{errors.quantity?.message}</p>
-        </div>
+        </div>*/}
 
         <div>
           <Controller
@@ -174,7 +195,10 @@ export default function FormUpdate({ delivery }) {
           />
           <p>{errors.for_user_id?.message}</p>
         </div>
-
+        <StyledLocationButton 
+          onClick={getLocation} 
+          endIcon={<AddLocationAltIcon />}
+          >{send}</StyledLocationButton>
         <Grid>
           <StyledButton type="submit">Actualizar Entrega</StyledButton>
         </Grid>
@@ -218,13 +242,19 @@ const StyledButton = styled(Button)`
   color: #000000;
 `;
 
+const StyledLocationButton = styled(Button)`
+  background: #ffffff;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: #000000;
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
 const StyledTextField = styled(TextField)`
   background: #ffffff;
   border-radius: 10px;
   color: #000000;
   width: 100%;
-`;
-
-const StyledMuiLink = styled(MuiLink)`
-  color: #000000;
 `;
