@@ -77,6 +77,21 @@ export default function Options({
     }
   };
 
+  const lessScore = async (score) => {
+    const id = delivery.id;
+    console.log(id, score);
+
+    try {
+      const responseUpdateScoreDelivery = await Delivery.updateDeliveryScore(
+        id,
+        score
+      );
+      console.log(responseUpdateScoreDelivery);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (stateDelivery === "Pendiente" && role === "finca") {
     column = (
       <>
@@ -110,6 +125,7 @@ export default function Options({
           onChange={(event, newValue) => {
             setValue(newValue);
             if (newValue < 5) {
+              lessScore(newValue);
               setOpen(true);
               console.log("Valor de la calificación: ", newValue);
             } else {
