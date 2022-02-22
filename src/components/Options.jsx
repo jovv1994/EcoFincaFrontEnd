@@ -125,9 +125,9 @@ export default function Options({
           onChange={(event, newValue) => {
             setValue(newValue);
             if (newValue < 5) {
-              lessScore(newValue);
               setOpen(true);
               console.log("Valor de la calificación: ", newValue);
+              lessScore(newValue);
             } else {
               onStateDeliveryChange("Finalizada");
               onSubmit(newValue);

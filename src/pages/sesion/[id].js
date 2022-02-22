@@ -39,7 +39,6 @@ const LoginPage = () => {
   });
 
   const [result, setResult] = useState("");
-  const [errorsList, setErrorsList] = useState([]);
   const { login } = useAuth();
   const router = useRouter();
   const [values, setValues] = useState({
@@ -73,24 +72,7 @@ const LoginPage = () => {
 
       location.reload();
     } catch (e) {
-      console.log("e", e.response);
-      const { response } = e;
-      setResult("An error has occurred");
-
-      if (response) {
-        if (response.data.errors) {
-          const errors = response.data.errors;
-          // const errorList = Object.values(errors);
-          const newErrorList = [];
-
-          for (let field in errors) {
-            newErrorList.push(...errors[field]);
-          }
-          console.log("errorList", newErrorList);
-
-          setErrorsList(newErrorList);
-        }
-      }
+      alert("El correo o la contraseña es incorrecto");
     }
   };
 
@@ -175,7 +157,6 @@ const LoginPage = () => {
 
           <Grid>
             <StyledButton type="submit">Iniciar sesión</StyledButton>
-            <p>{result}</p>
 
             <Link href="/forgotpassword" passHref>
               <Hiper style={{ textAlign: "center" }}>

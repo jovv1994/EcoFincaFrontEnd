@@ -10,7 +10,7 @@ import Image from "next/image";
 import Delivery from "@/api/delivery";
 import withAuth from "@/hocs/withAuth";
 import User from "@/api/user";
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 
 /*-------------------------Validacion de datos--------------------------*/
 const schema = yup.object().shape({
@@ -21,7 +21,8 @@ const schema = yup.object().shape({
     .required("Debe elegir un centro de acopio para su entrega"),
 });
 
-var longitude=null, latitude=null;
+var longitude = null,
+  latitude = null;
 /*-----------------------------------------------------------------------*/
 const DeliveryPage = () => {
   const {
@@ -34,7 +35,9 @@ const DeliveryPage = () => {
   });
 
   const [collectionCenters, setCollectionCenters] = useState([]);
-  const [send, setSend] = useState("Enviar ubicación para el retiro de la entrega");
+  const [send, setSend] = useState(
+    "Enviar ubicación para el retiro de la entrega"
+  );
 
   useEffect(() => {
     const getData = async () => {
@@ -50,40 +53,49 @@ const DeliveryPage = () => {
   }, []);
 
   const onSubmit = async (formData) => {
-    if(longitude == null || latitude == null){
-      alert("Por favor ingrese la ubicación para poder hacer el retiro de la entrega");
-    }else{
+    if (longitude == null || latitude == null) {
+      alert(
+        "Por favor ingrese la ubicación para poder hacer el retiro de la entrega"
+      );
+    } else {
       console.log("Datos enviados desde el formulario de entregas:", formData);
 
-    try {
-      const deliveryData = {
-        ...formData,
-      };
+      try {
+        const deliveryData = {
+          ...formData,
+        };
 
-      const response = await Delivery.create(deliveryData, longitude, latitude);
-      console.log(
-        "Respuesta del servidor de la entrega creada:",
-        response.data
-      );
-      reset();
-    } catch (error) {
-      console.log(error);
+        const response = await Delivery.create(
+          deliveryData,
+          longitude,
+          latitude
+        );
+        console.log(
+          "Respuesta del servidor de la entrega creada:",
+          response.data
+        );
+        reset();
+      } catch (error) {
+        console.log(error);
+      }
     }
-    }
+
+    longitude = null;
+    latitude = null;
   };
-  
+
   const getLocation = () => {
     if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function setPosition(position){
-      longitude = position.coords.longitude;
-      console.log(longitude);
-      latitude = position.coords.latitude;
-      console.log(latitude);
-      setSend("Ubicación enviada")
-    });
-    } else { 
+      navigator.geolocation.getCurrentPosition(function setPosition(position) {
+        longitude = position.coords.longitude;
+        console.log(longitude);
+        latitude = position.coords.latitude;
+        console.log(latitude);
+        setSend("Ubicación enviada");
+      });
+    } else {
       alert("La geolocalización no es soportada en este navegador.");
-      }
+    }
   };
 
   /*-----------------Renderizado del componente----------------------*/
@@ -179,10 +191,12 @@ const DeliveryPage = () => {
             />
             <p>{errors.for_user_id?.message}</p>
           </div>
-          <StyledLocationButton 
-          onClick={getLocation} 
-          endIcon={<AddLocationAltIcon />}
-          >{send}</StyledLocationButton>
+          <StyledLocationButton
+            onClick={getLocation}
+            endIcon={<AddLocationAltIcon />}
+          >
+            {send}
+          </StyledLocationButton>
           <Grid>
             <StyledButton type="submit">Publicar Entrega</StyledButton>
             <Link href="/home/finca">
